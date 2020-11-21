@@ -17,11 +17,11 @@ import java.util.List;
 
 @RestController
 @Api(tags = "测试用示范接口")
-@RequestMapping(value = "/test")
+@RequestMapping(value = "/api/test")
 public class HelloController {
 
-    @ApiOperation(value = "测试接口，hello，world", notes = "")
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    @ApiOperation(value = "测试接口，hello，world", notes = "")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = -1, message = "error")})
     public String index() {
         /**

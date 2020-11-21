@@ -1,5 +1,7 @@
 package com.seedcup.seedcupbackend.common.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,7 +10,8 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class User {
-    private Long id;
+    @TableId(type = IdType.AUTO)
+    private Integer id;
     private String username;
     private String passwordMd5;
     private String phoneNumber;
@@ -17,5 +20,5 @@ public class User {
     private String className;
     private String email;
     private LocalDateTime createdTime;
-    private Long teamId;
+    private Integer teamId;
 }
