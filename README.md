@@ -8,6 +8,6 @@
 
 例：在本地http://localhost:8087 开启服务，接口文档地址即在：http://localhost:8087/swagger-ui.html
 
-接口文档
+接口文档会自动扫描项目里所有controller,根据相关注解生成对应API文档
 
 ![swagger接口文档图示](http://image-holdice.test.upcdn.net/image-res/2BEB8BD5-B7E0-498B-9ED8-D0B588C773FD.png)
