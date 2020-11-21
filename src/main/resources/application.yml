@@ -7,3 +7,10 @@ spring:
     url: jdbc:mysql://localhost:3306/seedcup?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: root
     password: 3239
+
+swagger:
+  enabled: true
+  version: 0.1
+  title: 种子杯后台接口文档
+  description: 重构中
+  base-package: com.seedcup.seedcupbackend.*.controller
