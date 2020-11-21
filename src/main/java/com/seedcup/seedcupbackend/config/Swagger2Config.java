@@ -20,9 +20,6 @@ public class Swagger2Config {
     @Value("${swagger.title}")
     private String title;
 
-    @Value("${swagger.base-package}")
-    private String basePackage;
-
     @Value("${swagger.description}")
     private String description;
 
