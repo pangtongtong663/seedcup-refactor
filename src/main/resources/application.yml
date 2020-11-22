@@ -8,6 +8,13 @@ spring:
     username: root
     password: 3239
 
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    timeout: 5000
+
+
 swagger:
   enabled: true
   version: 0.1
