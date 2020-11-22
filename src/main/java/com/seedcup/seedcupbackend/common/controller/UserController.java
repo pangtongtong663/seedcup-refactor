@@ -24,6 +24,13 @@ public class UserController {
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     @ApiOperation(value = "用户注册")
     public ResponseDto<Object> signIn(@Valid @RequestBody UserSignUpDto signUpDto) {
+        /*
+         * @Author holdice
+         * @Description 用户注册接口
+         * @Date 2020/11/22 下午7:36
+         * @Param [signUpDto]
+         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
+         */
         try {
             userService.signUp(signUpDto);
             return new ResponseDto<>("0", "success");

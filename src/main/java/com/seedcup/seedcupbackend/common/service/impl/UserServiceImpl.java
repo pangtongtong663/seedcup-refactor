@@ -24,11 +24,12 @@ public class UserServiceImpl implements UserService {
     public void signUp(UserSignUpDto signUpDto) throws DuplicateUserInfoException {
         /*
          * @Author holdice
-         * @Description 提供注册服务
+         * @Description 提供注册服务，会进行判重处理，判重字段为[username, phoneNumber, email]，
+         * 如果有重复，会构建一个包含重复字段名list的自定义异常并抛出，由控制器处理异常。
          * @Date 2020/11/21 1:30 下午
          * @Param [signUpDto]
          * @return boolean
-         * @throws DuplicateUserInfoException
+         * @throws com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException
          */
         DuplicateUserInfoException e = new DuplicateUserInfoException();
         QueryWrapper<User> qw = new QueryWrapper<>();
@@ -68,16 +69,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean logIn(String username, String password) {
+        //TODO 登录接口
         return false;
     }
 
     @Override
     public void logOut() {
-
+        //TODO 退出登录接口
     }
 
     @Override
     public void editProfile() {
-
+        //TODO 修改用户属性接口
     }
 }

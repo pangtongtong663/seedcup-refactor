@@ -29,6 +29,13 @@ public class SecurityTool {
     }
 
     public static boolean match(String encrypted, String notEncrypted, String salt) {
+        /*
+         * @Author holdice
+         * @Description 通过传入明文和盐匹配暗文
+         * @Date 2020/11/22 下午7:06
+         * @Param [encrypted, notEncrypted, salt]
+         * @return boolean
+         */
         return encrypted.equals(encrypt(notEncrypted, salt));
     }
 }

@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    @ApiOperation(value = "测试接口，hello，world", notes = "")
+    @ApiOperation(value = "测试接口，hello，world")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = -1, message = "error")})
     public String index() {
-        /**
+        /*
          * @Author holdice
          * @Description
          * @Date 2020/11/20 11:45 下午
