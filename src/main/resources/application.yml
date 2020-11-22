@@ -13,3 +13,9 @@ swagger:
   version: 0.1
   title: 种子杯后台接口文档
   description: 重构中
+
+logging:
+  level:
+    root: info
+  file:
+    name: spring_log.log

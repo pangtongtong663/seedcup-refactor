@@ -9,8 +9,6 @@ import com.seedcup.seedcupbackend.common.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -45,6 +43,9 @@ public class UserServiceImpl implements UserService {
         }
         if (e.getDuplicateInfos().size() == 0) {
             //TODO 新建用户到数据库
+        }
+        else {
+            throw e;
         }
     }
 

@@ -14,7 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class Swagger2Config {
 
-    @Value(value = "${swagger.enabled}")
+    @Value("${swagger.enabled}")
     private boolean enabled;
 
     @Value("${swagger.title}")
