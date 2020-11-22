@@ -1,4 +1,4 @@
-package com.seedcup.seedcupbackend.config;
+package com.seedcup.seedcupbackend.global.config;
 
 import com.google.common.base.Predicates;
 import org.springframework.beans.factory.annotation.Value;

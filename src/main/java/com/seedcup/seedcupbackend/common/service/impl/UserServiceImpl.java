@@ -6,9 +6,14 @@ import com.seedcup.seedcupbackend.common.dao.UserMapper;
 import com.seedcup.seedcupbackend.common.po.User;
 import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
 import com.seedcup.seedcupbackend.common.service.UserService;
+import com.seedcup.seedcupbackend.utils.SecurityTool;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -37,12 +42,24 @@ public class UserServiceImpl implements UserService {
             e.addDuplicateInfoField("email");
         }
         qw.clear();
-        qw.eq("phoneNumber", signUpDto.getPhoneNumber());
+        qw.eq("phone_number", signUpDto.getPhoneNumber());
         if (userMapper.selectList(qw).size() != 0) {
             e.addDuplicateInfoField("phoneNumber");
         }
         if (e.getDuplicateInfos().size() == 0) {
-            //TODO 新建用户到数据库
+            User newUser = User.builder()
+                    .username(signUpDto.getUsername())
+                    .passwordMd5(SecurityTool.encrypt(signUpDto.getPassword(), signUpDto.getUsername()))
+                    .phoneNumber(signUpDto.getPhoneNumber())
+                    .school(signUpDto.getSchool())
+                    .college(signUpDto.getCollege())
+                    .className(signUpDto.getClassName())
+                    .email(signUpDto.getEmail())
+                    .createdTime(LocalDateTime.now())
+                    .teamId(-1)
+                    .build();
+            userMapper.insert(newUser);
+            log.info(newUser.toString());
         }
         else {
             throw e;

@@ -1,6 +1,7 @@
 package com.seedcup.seedcupbackend.common.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,16 +15,35 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     @TableId(type = IdType.AUTO)
     private Integer id;
+
+    @TableField(value = "username")
     private String username;
+
+    @TableField(value = "password_md5")
     private String passwordMd5;
+
+    @TableField(value = "phone_number")
     private String phoneNumber;
+
+    @TableField(value = "school")
     private String school;
+
+    @TableField(value = "college")
     private String college;
+
+    @TableField(value = "class_name")
     private String className;
+
+    @TableField(value = "email")
     private String email;
+
+    @TableField(value = "created_time")
     private LocalDateTime createdTime;
+
+    @TableField(value = "team_id")
     private Integer teamId;
 
     private void setId(Integer id) {

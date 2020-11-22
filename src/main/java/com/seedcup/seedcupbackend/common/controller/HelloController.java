@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @Api(tags = "测试用示范接口")
 @RequestMapping(value = "/api/test")
 public class HelloController {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     @ApiOperation(value = "测试接口，hello，world", notes = "")
@@ -29,7 +29,7 @@ public class HelloController {
          * @Param java.lang.String
          * @return java.lang.String
          **/
-        logger.info("hello,world api called");
+        log.info("hello,world api called");
         return "Hello,World!";
     }
 }

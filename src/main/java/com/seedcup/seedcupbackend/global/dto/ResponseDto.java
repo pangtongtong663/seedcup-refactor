@@ -1,4 +1,4 @@
-package com.seedcup.seedcupbackend.utils;
+package com.seedcup.seedcupbackend.global.dto;
 
 import lombok.*;
 
