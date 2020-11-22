@@ -1,14 +1,18 @@
-package com.seedcup.seedcupbackend.common.pojo;
+package com.seedcup.seedcupbackend.common.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @TableId(type = IdType.AUTO)
     private Integer id;
@@ -21,4 +25,8 @@ public class User {
     private String email;
     private LocalDateTime createdTime;
     private Integer teamId;
+
+    private void setId(Integer id) {
+        this.id = id;
+    }
 }

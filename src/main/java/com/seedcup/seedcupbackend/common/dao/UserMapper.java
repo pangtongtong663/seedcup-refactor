@@ -1,7 +1,7 @@
-package com.seedcup.seedcupbackend.common.mapper;
+package com.seedcup.seedcupbackend.common.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.seedcup.seedcupbackend.common.pojo.User;
+import com.seedcup.seedcupbackend.common.po.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

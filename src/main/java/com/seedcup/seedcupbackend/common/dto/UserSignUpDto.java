@@ -1,4 +1,4 @@
-package com.seedcup.seedcupbackend.common.pojo;
+package com.seedcup.seedcupbackend.common.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

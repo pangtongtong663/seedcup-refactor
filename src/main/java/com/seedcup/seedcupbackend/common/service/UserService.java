@@ -1,15 +1,15 @@
 package com.seedcup.seedcupbackend.common.service;
 
-import com.seedcup.seedcupbackend.common.pojo.UserSignUpDto;
-import org.springframework.stereotype.Service;
+import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
+import com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException;
 
 public interface UserService {
 
-    public void signUp(UserSignUpDto signUpDto);
+    void signUp(UserSignUpDto signUpDto) throws DuplicateUserInfoException;
 
-    public boolean logIn(String username, String password);
+    boolean logIn(String username, String password);
 
-    public void logOut();
+    void logOut();
 
-    public void editProfile();
+    void editProfile();
 }

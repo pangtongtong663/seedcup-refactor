@@ -1,13 +1,11 @@
 package com.seedcup.seedcupbackend.common.controller;
 
 import com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException;
-import com.seedcup.seedcupbackend.common.pojo.UserSignUpDto;
+import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
 import com.seedcup.seedcupbackend.common.service.UserService;
 import com.seedcup.seedcupbackend.utils.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
