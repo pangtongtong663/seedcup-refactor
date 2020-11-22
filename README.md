@@ -4,9 +4,9 @@
 
 ## 接口文档
 
-路径：{ip}/swagger-ui.html
+路径：{ip}/api/doc
 
-例：在本地http://localhost:8087 开启服务，接口文档地址即在：http://localhost:8087/swagger-ui.html
+例：在本地http://localhost:8087 开启服务，接口文档地址在：http://localhost:8087/api/doc
 
 接口文档会自动扫描项目里所有controller,根据相关注解生成对应API文档
 
