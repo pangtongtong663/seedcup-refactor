@@ -18,35 +18,35 @@ import javax.validation.constraints.Pattern;
 public class UserSignUpDto {
 
     @NotBlank(message = "Empty username")
-    @ApiModelProperty(value = "用户名", required = true, notes = "不能重复")
+    @ApiModelProperty(value = "用户名", required = true, notes = "不能重复", example = "我是一个用户名")
     private String username;
 
     @NotBlank(message = "Empty password")
     @Length(min = 6, message = "Password length less than 6")
-    @ApiModelProperty(value = "密码", required = true, notes = "至少6位")
+    @ApiModelProperty(value = "密码", required = true, notes = "至少6位", example = "pass123345")
     private String password;
 
     @NotBlank(message = "Empty school")
-    @ApiModelProperty(value = "所属学校", required = true, notes = "所属学校全称")
+    @ApiModelProperty(value = "所属学校", required = true, notes = "所属学校", example = "华中科技大学")
     private String school;
 
     @NotBlank(message = "Empty college")
-    @ApiModelProperty(value = "所属院系", required = true, notes = "所属院系全称")
+    @ApiModelProperty(value = "所属院系", required = true, notes = "所属院系", example = "电子信息与通信学院")
     private String college;
 
     @NotBlank(message = "Empty className")
-    @ApiModelProperty(value = "所属班级", required = true, notes = "所属班级全称")
+    @ApiModelProperty(value = "所属班级", required = true, notes = "所属班级", example = "种子1801")
     private String className;
 
     @NotBlank(message = "Empty phoneNumber")
     @Length(min = 11, max = 11, message = "Wrong format of phone number")
     @Pattern(regexp = "^1([38][0-9]|4[579]|5[^4]|6[6]|7[0135678]|9[89])\\d{8}$"
             , message = "Wrong format of phone number")
-    @ApiModelProperty(value = "电话号码", required = true, notes = "不能重复")
+    @ApiModelProperty(value = "电话号码", required = true, notes = "不能重复", example = "15811111111")
     private String phoneNumber;
 
     @NotBlank
     @Email(message = "Wrong format of email")
-    @ApiModelProperty(value = "电子邮箱", required = true, notes = "不能重复")
+    @ApiModelProperty(value = "电子邮箱", required = true, notes = "不能重复", example = "u2020202020@hust.edu.cn")
     private String email;
 }
