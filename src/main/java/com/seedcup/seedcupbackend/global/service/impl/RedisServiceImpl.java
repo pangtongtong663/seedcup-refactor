@@ -29,19 +29,8 @@ public class RedisServiceImpl implements RedisService {
     private static final String KEY_PREFIX_SET = "seedcup:set";
     private static final String KEY_PREFIX_LIST = "seedcup:list";
 
-
-    private final RedisTemplate<String, String> redisTemplate;
-
-
-    /**
-     * 注入
-     * @param redisTemplate 模板
-     */
     @Autowired
-    public RedisServiceImpl(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
-
+    private RedisTemplate<String, String> redisTemplate;
 
     /**
      * 添加 key:string 缓存
