@@ -1,5 +1,7 @@
 package com.seedcup.seedcupbackend.common.controller;
 
+import com.seedcup.seedcupbackend.common.annotation.LoginRequired;
+import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -12,16 +14,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 @Slf4j
 @RestController
 @Api(tags = "测试用示范接口")
 @RequestMapping(value = "/api/test")
 public class HelloController {
 
+    @LoginRequired
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     @ApiOperation(value = "测试接口，hello，world")
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = -1, message = "error")})
-    public String index() {
+    public String index(HttpSession session) {
         /*
          * @Author holdice
          * @Description
@@ -29,7 +33,6 @@ public class HelloController {
          * @Param java.lang.String
          * @return java.lang.String
          **/
-        log.info("hello,world api called");
-        return "Hello,World!";
+        return "Hello " + session.getAttribute("userInfo") + " " + session.getMaxInactiveInterval() + AuthInterceptor.getCurrentUser().toString();
     }
 }
