@@ -1,6 +1,7 @@
 package com.seedcup.seedcupbackend.common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
 import com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
 import com.seedcup.seedcupbackend.common.po.User;
@@ -68,9 +69,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean logIn(String username, String password) {
-        //TODO 登录接口
-        return false;
+    public User logIn(UserLoginDto loginInfo) {
+        String usernameOrEmailOrPhoneNumber = loginInfo.getUsername();
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        qw.eq("username", usernameOrEmailOrPhoneNumber);
+        qw.or();
+        qw.eq("email", usernameOrEmailOrPhoneNumber);
+        qw.or();
+        qw.eq("phone_number", usernameOrEmailOrPhoneNumber);
+        for (User user : userMapper.selectList(qw)
+             ) {
+            if (SecurityTool.match(user.getPasswordMd5(), loginInfo.getPassword(), user.getUsername())) {
+                return user;
+            }
+        }
+        return null;
     }
 
     @Override

@@ -1,16 +1,18 @@
 package com.seedcup.seedcupbackend.common.controller;
 
+import com.baomidou.mybatisplus.extension.api.R;
+import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
 import com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException;
 import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
+import com.seedcup.seedcupbackend.common.po.User;
 import com.seedcup.seedcupbackend.common.service.UserService;
 import com.seedcup.seedcupbackend.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
@@ -23,7 +25,7 @@ public class UserController {
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     @ApiOperation(value = "用户注册")
-    public ResponseDto<Object> signIn(@Valid @RequestBody UserSignUpDto signUpDto) {
+    public ResponseDto<Object> signUp(@Valid @RequestBody UserSignUpDto signUpDto) {
         /*
          * @Author holdice
          * @Description 用户注册接口
@@ -36,6 +38,19 @@ public class UserController {
             return new ResponseDto<>("0", "success");
         } catch (DuplicateUserInfoException e) {
             return new ResponseDto<>("100", "failure", e.getDuplicateInfos());
+        }
+    }
+
+    @RequestMapping(value = "/logIn", method = RequestMethod.POST)
+    public ResponseDto<Object> logIn(@RequestBody UserLoginDto loginInfo, HttpSession session) {
+        User user  = userService.logIn(loginInfo);
+        if (user != null) {
+            session.setAttribute("userId", user.getId());
+            session.setAttribute("userTeamId", user.getTeamId());
+            session.setAttribute("username", user.getUsername());
+            return new ResponseDto<>("0", "success");
+        } else {
+            return new ResponseDto<>("100", "failure");
         }
     }
 }
