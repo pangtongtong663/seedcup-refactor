@@ -1,5 +1,8 @@
 server:
   port: 8087
+  servlet:
+    session:
+      timeout: 18000
 
 spring:
   datasource:
@@ -12,8 +15,11 @@ spring:
     database: 1
     host: 127.0.0.1
     port: 6379
-    timeout: 5000
 
+  session:
+    redis:
+      flush-mode: on_save
+      namespace: spring:session
 
 swagger:
   enabled: true
@@ -25,4 +31,4 @@ logging:
   level:
     root: info
   file:
-    name: spring_log.log
+    name: log/spring_log.log

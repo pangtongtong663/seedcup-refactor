@@ -1,0 +1,8 @@
+{
+  "code": "101",
+  "message": "duplicate information",
+  "data": [
+    "email",
+    "phoneNumber"
+  ]
+}
