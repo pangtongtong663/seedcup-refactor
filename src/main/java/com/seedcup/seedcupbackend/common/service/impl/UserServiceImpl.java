@@ -12,12 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
-
     @Autowired
     private UserMapper userMapper;
 
@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
         for (User user : userMapper.selectList(qw)
              ) {
             if (SecurityTool.match(user.getPasswordMd5(), loginInfo.getPassword(), user.getUsername())) {
+                user.setPasswordMd5("");
                 return user;
             }
         }
@@ -87,8 +88,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logOut() {
-        //TODO 退出登录接口
+    public void logOut(HttpSession session) {
+        session.removeAttribute("userInfo");
     }
 
     @Override
