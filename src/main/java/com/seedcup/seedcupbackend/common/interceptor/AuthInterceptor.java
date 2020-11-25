@@ -49,6 +49,13 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     public static User getCurrentUser() {
+        /*
+         * @Author holdice
+         * @Description 获取当前登录的用户
+         * @Date 2020/11/25 9:54 下午 
+         * @Param []
+         * @return com.seedcup.seedcupbackend.common.po.User
+         */
         return currentUser.get();
     }
 }
