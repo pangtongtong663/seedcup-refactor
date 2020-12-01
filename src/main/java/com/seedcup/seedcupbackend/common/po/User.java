@@ -47,6 +47,9 @@ public class User implements Serializable {
     @TableField(value = "team_id")
     private Integer teamId;
 
+    @TableField(value = "is_admin")
+    private boolean isAdmin;
+
     private void setId(Integer id) {
         this.id = id;
     }

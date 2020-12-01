@@ -34,11 +34,6 @@ public class UserServiceImpl implements UserService {
          */
         DuplicateUserInfoException e = new DuplicateUserInfoException();
         QueryWrapper<User> qw = new QueryWrapper<>();
-        qw.eq("username", signUpDto.getUsername());
-        if (userMapper.selectList(qw).size() != 0) {
-            e.addDuplicateInfoField("username");
-        }
-        qw.clear();
         qw.eq("email", signUpDto.getEmail());
         if (userMapper.selectList(qw).size() != 0) {
             e.addDuplicateInfoField("email");
@@ -51,7 +46,7 @@ public class UserServiceImpl implements UserService {
         if (e.getDuplicateInfos().size() == 0) {
             User newUser = User.builder()
                     .username(signUpDto.getUsername())
-                    .passwordMd5(SecurityTool.encrypt(signUpDto.getPassword(), signUpDto.getUsername()))
+                    .passwordMd5(SecurityTool.encrypt(signUpDto.getPassword(), signUpDto.getEmail()))
                     .phoneNumber(signUpDto.getPhoneNumber())
                     .school(signUpDto.getSchool())
                     .college(signUpDto.getCollege())
@@ -79,7 +74,7 @@ public class UserServiceImpl implements UserService {
         qw.eq("phone_number", usernameOrEmailOrPhoneNumber);
         for (User user : userMapper.selectList(qw)
              ) {
-            if (SecurityTool.match(user.getPasswordMd5(), loginInfo.getPassword(), user.getUsername())) {
+            if (SecurityTool.match(user.getPasswordMd5(), loginInfo.getPassword(), user.getEmail())) {
                 user.setPasswordMd5("");
                 return user;
             }
@@ -95,5 +90,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public void editProfile() {
         //TODO 修改用户属性接口
+    }
+
+    @Override
+    public void generateAdminUser(String username, String password) {
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        qw.eq("email", username + "@admin.com");
+        User user = userMapper.selectOne(qw);
+        if (user == null) {
+            userMapper.insert(
+                    User.builder()
+                    .username(username).className("").college("").email(username + "@admin.com").phoneNumber("12345678900").school("")
+                    .passwordMd5(SecurityTool.encrypt(password,username + "@admin.com"))
+                    .createdTime(LocalDateTime.now())
+                    .teamId(-1)
+                    .isAdmin(true)
+                    .build()
+            );
+            log.info("admin: " + username + " password: " + password + " generated");
+        }
+    }
+
+    @Override
+    public User getUserById(Integer id) {
+        User user = userMapper.selectById(id);
+        user.setPasswordMd5("");
+        return user;
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        qw.eq("username", username);
+        User user = userMapper.selectOne(qw);
+        return user;
     }
 }

@@ -16,4 +16,10 @@ public interface UserService {
     void logOut(HttpSession session);
 
     void editProfile();
+
+    void generateAdminUser(String username, String password);
+
+    User getUserById(Integer id);
+
+    User getUserByUsername(String username);
 }
