@@ -20,8 +20,4 @@ public interface UserService {
     void generateAdminUser(String username, String password);
 
     User getCurrentUser();
-
-    User getUserById(Integer id);
-
-    User getUserByUsername(String username);
 }

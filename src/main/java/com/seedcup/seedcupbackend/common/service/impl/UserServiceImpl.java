@@ -67,13 +67,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User logIn(UserLoginDto loginInfo) {
-        String usernameOrEmailOrPhoneNumber = loginInfo.getUsername();
+        String emailOrPhoneNumber = loginInfo.getUsername();
         QueryWrapper<User> qw = new QueryWrapper<>();
-        qw.eq("username", usernameOrEmailOrPhoneNumber);
+        qw.eq("email", emailOrPhoneNumber);
         qw.or();
-        qw.eq("email", usernameOrEmailOrPhoneNumber);
-        qw.or();
-        qw.eq("phone_number", usernameOrEmailOrPhoneNumber);
+        qw.eq("phone_number", emailOrPhoneNumber);
         for (User user : userMapper.selectList(qw)
              ) {
             if (SecurityTool.match(user.getPasswordMd5(), loginInfo.getPassword(), user.getEmail())) {
@@ -103,34 +101,19 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             userMapper.insert(
                     User.builder()
-                    .username(username).className("").college("").email(username + "@admin.com").phoneNumber("12345678900").school("")
+                    .username(username).className("").college("").email(username + "@admin.com").phoneNumber("123456789" + username.substring(username.length() - 2)).school("")
                     .passwordMd5(SecurityTool.encrypt(password,username + "@admin.com"))
                     .createdTime(LocalDateTime.now())
                     .teamId(-1)
                     .isAdmin(true)
                     .build()
             );
-            log.info("admin: " + username + " password: " + password + " generated");
+            log.info("admin: " + username + "@admin.com" + ";password: " + password + "; generated");
         }
     }
 
     @Override
     public User getCurrentUser() {
         return AuthInterceptor.getCurrentUser();
-    }
-
-    @Override
-    public User getUserById(Integer id) {
-        User user = userMapper.selectById(id);
-        user.setPasswordMd5("");
-        return user;
-    }
-
-    @Override
-    public User getUserByUsername(String username) {
-        QueryWrapper<User> qw = new QueryWrapper<>();
-        qw.eq("username", username);
-        User user = userMapper.selectOne(qw);
-        return user;
     }
 }

@@ -24,7 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    @RequestMapping(value = "/sign_up", method = RequestMethod.POST)
     public ResponseDto<Object> signUp(@Valid @RequestBody UserSignUpDto signUpDto) {
         /*
          * @Author holdice
@@ -41,7 +41,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/log_in", method = RequestMethod.POST)
     public ResponseDto<Object> logIn(@Valid @RequestBody UserLoginDto loginInfo, HttpSession session) {
         User user = userService.logIn(loginInfo);
         if (user != null) {
@@ -53,14 +53,14 @@ public class UserController {
     }
 
     @LoginRequired
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/log_out", method = RequestMethod.GET)
     public ResponseDto<Object> logOut(HttpSession session) {
         userService.logOut(session);
         return StandardResponse.ok();
     }
 
     @LoginRequired
-    @RequestMapping(value = "/myinfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/my_info", method = RequestMethod.GET)
     public ResponseDto<Object> getCurrentUserInfo() {
         return StandardResponse.ok(userService.getCurrentUser());
     }
