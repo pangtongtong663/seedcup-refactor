@@ -3,6 +3,7 @@ package com.seedcup.seedcupbackend.common.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class User implements Serializable {
     private String username;
 
     @TableField(value = "password_md5")
+    @JsonIgnore
     private String passwordMd5;
 
     @TableField(value = "phone_number")
