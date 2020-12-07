@@ -43,7 +43,7 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseDto<Object> logIn(@Valid @RequestBody UserLoginDto loginInfo, HttpSession session) {
-        User user  = userService.logIn(loginInfo);
+        User user = userService.logIn(loginInfo);
         if (user != null) {
             session.setAttribute("userInfo", user);
             return StandardResponse.ok();

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
 import com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
+import com.seedcup.seedcupbackend.common.exception.UnAuthException;
 import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
 import com.seedcup.seedcupbackend.common.po.User;
 import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
@@ -85,6 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logOut(HttpSession session) {
+        if (AuthInterceptor.getCurrentUser() == null) throw new UnAuthException();
         session.removeAttribute("userInfo");
     }
 
