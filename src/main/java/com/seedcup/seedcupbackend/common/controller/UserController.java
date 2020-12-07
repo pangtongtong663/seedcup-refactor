@@ -43,6 +43,13 @@ public class UserController {
 
     @RequestMapping(value = "/log_in", method = RequestMethod.POST)
     public ResponseDto<Object> logIn(@Valid @RequestBody UserLoginDto loginInfo, HttpSession session) {
+        /*
+         * @Author holdice
+         * @Description 用户登录接口
+         * @Date 2020/12/7 9:07 下午
+         * @Param [loginInfo, session]
+         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
+         */
         User user = userService.logIn(loginInfo);
         if (user != null) {
             session.setAttribute("userInfo", user);
@@ -55,6 +62,13 @@ public class UserController {
     @LoginRequired
     @RequestMapping(value = "/log_out", method = RequestMethod.GET)
     public ResponseDto<Object> logOut(HttpSession session) {
+        /*
+         * @Author holdice
+         * @Description 注销登录
+         * @Date 2020/12/7 9:07 下午
+         * @Param [session]
+         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
+         */
         userService.logOut(session);
         return StandardResponse.ok();
     }
@@ -62,6 +76,13 @@ public class UserController {
     @LoginRequired
     @RequestMapping(value = "/my_info", method = RequestMethod.GET)
     public ResponseDto<Object> getCurrentUserInfo() {
+        /*
+         * @Author holdice
+         * @Description 获取当前用户信息
+         * @Date 2020/12/7 9:08 下午
+         * @Param []
+         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
+         */
         return StandardResponse.ok(userService.getCurrentUser());
     }
 }

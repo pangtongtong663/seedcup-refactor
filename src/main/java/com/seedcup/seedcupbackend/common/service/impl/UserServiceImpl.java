@@ -67,6 +67,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User logIn(UserLoginDto loginInfo) {
+        /*
+         * @Author holdice
+         * @Description 提供登录服务，介于用户名（真名）可能重名，故只支持邮箱和电话号码登录
+         *              登录状态的维持基于session，session信息存储在redis
+         * @Date 2020/12/7 9:08 下午
+         * @Param [loginInfo]
+         * @return com.seedcup.seedcupbackend.common.po.User
+         */
         String emailOrPhoneNumber = loginInfo.getUsername();
         QueryWrapper<User> qw = new QueryWrapper<>();
         qw.eq("email", emailOrPhoneNumber);
@@ -84,6 +92,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logOut(HttpSession session) {
+        /*
+         * @Author holdice
+         * @Description 提供注销登录服务，从session中删除userInfo信息
+         * @Date 2020/12/7 9:09 下午
+         * @Param [session]
+         * @return void
+         */
         if (AuthInterceptor.getCurrentUser() == null) throw new UnAuthException();
         session.removeAttribute("userInfo");
     }
@@ -95,6 +110,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void generateAdminUser(String username, String password) {
+        /*
+         * @Author holdice
+         * @Description 生成管理员，只在应用启动时可能被调用，如果没有对应的管理员，则通过传入的username创建管理员
+         * @Date 2020/12/7 9:12 下午
+         * @Param [username, password]
+         * @return void
+         */
         QueryWrapper<User> qw = new QueryWrapper<>();
         qw.eq("email", username + "@admin.com");
         User user = userMapper.selectOne(qw);

@@ -7,5 +7,8 @@ import java.lang.annotation.*;
 @Documented
 public @interface LoginRequired {
 
+    /**
+     * 是否需要管理员权限，默认不需要
+     */
     boolean needAdmin() default false;
 }
