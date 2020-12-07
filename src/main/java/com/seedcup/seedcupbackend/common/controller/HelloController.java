@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping(value = "/api/test")
 public class HelloController {
 
-    @LoginRequired
+    @LoginRequired(needAdmin = true)
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String index(HttpSession session) {
         /*

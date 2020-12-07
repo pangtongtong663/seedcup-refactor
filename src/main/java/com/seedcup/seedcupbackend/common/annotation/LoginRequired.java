@@ -6,4 +6,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface LoginRequired {
+
+    boolean needAdmin() default false;
 }
