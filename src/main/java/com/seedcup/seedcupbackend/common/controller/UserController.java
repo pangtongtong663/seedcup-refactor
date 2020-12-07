@@ -58,4 +58,10 @@ public class UserController {
         userService.logOut(session);
         return StandardResponse.ok();
     }
+
+    @LoginRequired
+    @RequestMapping(value = "/myinfo", method = RequestMethod.GET)
+    public ResponseDto<Object> getCurrentUserInfo() {
+        return StandardResponse.ok(userService.getCurrentUser());
+    }
 }

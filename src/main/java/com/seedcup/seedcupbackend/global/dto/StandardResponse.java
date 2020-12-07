@@ -8,6 +8,10 @@ public class StandardResponse {
         return new ResponseDto<>("0", "success");
     }
 
+    public static ResponseDto<Object> ok(Object data) {
+        return new ResponseDto<Object>("0", "success", data);
+    }
+
     public static ResponseDto<Object> fail() {
         return new ResponseDto<>("100", "failed");
     }

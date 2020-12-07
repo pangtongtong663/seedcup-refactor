@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
 import com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
+import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
 import com.seedcup.seedcupbackend.common.po.User;
 import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
 import com.seedcup.seedcupbackend.common.service.UserService;
@@ -109,6 +110,11 @@ public class UserServiceImpl implements UserService {
             );
             log.info("admin: " + username + " password: " + password + " generated");
         }
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return AuthInterceptor.getCurrentUser();
     }
 
     @Override
