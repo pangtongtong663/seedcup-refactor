@@ -81,6 +81,12 @@ public class UserApiTest {
     }
 
     @Test
+    @Order(4)
+    public void login4() throws Exception {
+
+    }
+
+    @Test
     @Order(5)
     public void logout() throws Exception {
         var request = ApiUtils.getBuilder("/api/user/log_out");
