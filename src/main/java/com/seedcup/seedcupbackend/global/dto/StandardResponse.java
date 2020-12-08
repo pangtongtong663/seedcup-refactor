@@ -27,4 +27,8 @@ public class StandardResponse {
     public static ResponseDto<String> wrongHttpMethod() {
         return new ResponseDto<>("104", "http method error");
     }
+
+    public static ResponseDto<Object> userNotExist() {
+        return new ResponseDto<>("998", "user not exist");
+    }
 }

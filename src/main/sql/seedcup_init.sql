@@ -1,6 +1,3 @@
-DROP TABLE `team`;
-DROP TABLE `user`;
-
 CREATE TABLE `team`  (
   `id` int(0) NOT NULL,
   `name` varchar(255) NOT NULL,

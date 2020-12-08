@@ -22,14 +22,14 @@ public class Team {
     private String name;
 
     @TableField(value = "leader_id")
-    private Integer leader_id;
+    private Integer leaderId;
 
     @TableField(value = "highest_grade")
-    private Integer highest_grade;
+    private Integer highestGrade;
 
     @TableField(value = "introduction")
     private String introduction;
 
     @TableField(value = "game_status")
-    private Integer game_status;
+    private Integer gameStatus;
 }
