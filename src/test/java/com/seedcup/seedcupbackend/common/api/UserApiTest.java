@@ -73,7 +73,7 @@ public class UserApiTest {
         var request = ApiUtils.postBuilder("/api/user/log_in")
                 .content("{\n" +
                         "    \"username\": \"\",\n" +
-                        "    \"password\": \"admin01\"\n" +
+                        "    \"password\": \"admin02\"\n" +
                         "}");
         mockMvc.perform(request)
                 .andDo(MockMvcResultHandlers.print())
