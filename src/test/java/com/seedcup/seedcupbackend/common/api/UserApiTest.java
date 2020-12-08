@@ -4,6 +4,7 @@ import com.seedcup.seedcupbackend.common.controller.HelloController;
 import com.seedcup.seedcupbackend.common.controller.UserController;
 import com.seedcup.seedcupbackend.common.service.UserService;
 import lombok.val;
+import org.hibernate.validator.internal.util.logging.formatter.CollectionOfClassesObjectFormatter;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.annotation.Resource;
@@ -35,7 +38,7 @@ public class UserApiTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private Cookie[] cookies;
+    private static Cookie[] cookies;
 
     @Test
     @Order(1)
@@ -46,17 +49,16 @@ public class UserApiTest {
                         "    \"username\": \"admin01@admin.com\",\n" +
                         "    \"password\": \"admin01\"\n" +
                         "}");
-        MvcResult result = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
                 .andReturn();
-        cookies = result.getResponse().getCookies();
     }
 
     @Test
     @Order(2)
     public void logout() throws  Exception {
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/api/user/log_out")
-                .cookie(cookies);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/api/user/log_out");
         mockMvc.perform(request)
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
