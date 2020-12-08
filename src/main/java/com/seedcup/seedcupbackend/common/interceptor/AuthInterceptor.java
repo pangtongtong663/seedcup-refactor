@@ -1,6 +1,7 @@
 package com.seedcup.seedcupbackend.common.interceptor;
 
 import com.seedcup.seedcupbackend.common.annotation.LoginRequired;
+import com.seedcup.seedcupbackend.common.exception.PermissionDeniedException;
 import com.seedcup.seedcupbackend.common.exception.UnAuthException;
 import com.seedcup.seedcupbackend.common.po.User;
 import org.springframework.context.annotation.Bean;
@@ -18,18 +19,23 @@ public class AuthInterceptor implements HandlerInterceptor {
     private static final ThreadLocal<User> currentUser = new ThreadLocal<>();
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         if (!(handler instanceof HandlerMethod)) return true;
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
         if (method.isAnnotationPresent(LoginRequired.class)) {
-            return authLogIn(request.getSession());
+            LoginRequired loginRequired = method.getAnnotation(LoginRequired.class);
+            User user = (User) request.getSession().getAttribute("userInfo");
+            if (authLogIn(user)) {
+                if (loginRequired.needAdmin()) return authAdmin(user);
+                return true;
+            }
+            return authLogIn(user);
         }
         return true;
     }
 
-    private boolean authLogIn(HttpSession session) throws UnAuthException {
-        User user = (User) session.getAttribute("userInfo");
+    private boolean authLogIn(User user) throws UnAuthException {
         if (user == null) {
             throw new UnAuthException();
         } else {
@@ -38,13 +44,21 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
     }
 
+    private boolean authAdmin(User user) throws PermissionDeniedException {
+        if (user.isAdmin()) {
+            return true;
+        } else {
+            throw new PermissionDeniedException();
+        }
+    }
+
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView){
 
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex){
 
     }
 

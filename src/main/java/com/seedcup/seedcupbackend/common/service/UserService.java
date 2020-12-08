@@ -16,4 +16,8 @@ public interface UserService {
     void logOut(HttpSession session);
 
     void editProfile();
+
+    void generateAdminUser(String username, String password);
+
+    User getCurrentUser();
 }

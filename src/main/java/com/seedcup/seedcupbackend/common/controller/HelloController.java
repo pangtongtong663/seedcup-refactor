@@ -15,9 +15,9 @@ import javax.servlet.http.HttpSession;
 @RequestMapping(value = "/api/test")
 public class HelloController {
 
-    @LoginRequired
+    @LoginRequired(needAdmin = true)
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String index(HttpSession session) {
+    public String index() {
         /*
          * @Author holdice
          * @Description
@@ -25,6 +25,6 @@ public class HelloController {
          * @Param java.lang.String
          * @return java.lang.String
          **/
-        return "Hello " + session.getAttribute("userInfo") + " " + session.getMaxInactiveInterval() + AuthInterceptor.getCurrentUser().toString();
+        return "Hello";
     }
 }

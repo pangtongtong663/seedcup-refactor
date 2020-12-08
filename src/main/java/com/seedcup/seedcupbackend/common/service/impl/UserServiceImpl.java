@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
 import com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
+import com.seedcup.seedcupbackend.common.exception.UnAuthException;
+import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
 import com.seedcup.seedcupbackend.common.po.User;
 import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
 import com.seedcup.seedcupbackend.common.service.UserService;
@@ -34,11 +36,6 @@ public class UserServiceImpl implements UserService {
          */
         DuplicateUserInfoException e = new DuplicateUserInfoException();
         QueryWrapper<User> qw = new QueryWrapper<>();
-        qw.eq("username", signUpDto.getUsername());
-        if (userMapper.selectList(qw).size() != 0) {
-            e.addDuplicateInfoField("username");
-        }
-        qw.clear();
         qw.eq("email", signUpDto.getEmail());
         if (userMapper.selectList(qw).size() != 0) {
             e.addDuplicateInfoField("email");
@@ -51,7 +48,7 @@ public class UserServiceImpl implements UserService {
         if (e.getDuplicateInfos().size() == 0) {
             User newUser = User.builder()
                     .username(signUpDto.getUsername())
-                    .passwordMd5(SecurityTool.encrypt(signUpDto.getPassword(), signUpDto.getUsername()))
+                    .passwordMd5(SecurityTool.encrypt(signUpDto.getPassword(), signUpDto.getEmail()))
                     .phoneNumber(signUpDto.getPhoneNumber())
                     .school(signUpDto.getSchool())
                     .college(signUpDto.getCollege())
@@ -70,16 +67,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User logIn(UserLoginDto loginInfo) {
-        String usernameOrEmailOrPhoneNumber = loginInfo.getUsername();
+        /*
+         * @Author holdice
+         * @Description 提供登录服务，介于用户名（真名）可能重名，故只支持邮箱和电话号码登录
+         *              登录状态的维持基于session，session信息存储在redis
+         * @Date 2020/12/7 9:08 下午
+         * @Param [loginInfo]
+         * @return com.seedcup.seedcupbackend.common.po.User
+         */
+        String emailOrPhoneNumber = loginInfo.getUsername();
         QueryWrapper<User> qw = new QueryWrapper<>();
-        qw.eq("username", usernameOrEmailOrPhoneNumber);
+        qw.eq("email", emailOrPhoneNumber);
         qw.or();
-        qw.eq("email", usernameOrEmailOrPhoneNumber);
-        qw.or();
-        qw.eq("phone_number", usernameOrEmailOrPhoneNumber);
+        qw.eq("phone_number", emailOrPhoneNumber);
         for (User user : userMapper.selectList(qw)
              ) {
-            if (SecurityTool.match(user.getPasswordMd5(), loginInfo.getPassword(), user.getUsername())) {
+            if (SecurityTool.match(user.getPasswordMd5(), loginInfo.getPassword(), user.getEmail())) {
                 user.setPasswordMd5("");
                 return user;
             }
@@ -89,11 +92,50 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logOut(HttpSession session) {
+        /*
+         * @Author holdice
+         * @Description 提供注销登录服务，从session中删除userInfo信息
+         * @Date 2020/12/7 9:09 下午
+         * @Param [session]
+         * @return void
+         */
+        if (AuthInterceptor.getCurrentUser() == null) throw new UnAuthException();
         session.removeAttribute("userInfo");
     }
 
     @Override
     public void editProfile() {
         //TODO 修改用户属性接口
+    }
+
+    @Override
+    public void generateAdminUser(String username, String password) {
+        /*
+         * @Author holdice
+         * @Description 生成管理员，只在应用启动时可能被调用，如果没有对应的管理员，则通过传入的username创建管理员
+         * @Date 2020/12/7 9:12 下午
+         * @Param [username, password]
+         * @return void
+         */
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        qw.eq("email", username + "@admin.com");
+        User user = userMapper.selectOne(qw);
+        if (user == null) {
+            userMapper.insert(
+                    User.builder()
+                    .username(username).className("").college("").email(username + "@admin.com").phoneNumber("123456789" + username.substring(username.length() - 2)).school("")
+                    .passwordMd5(SecurityTool.encrypt(password,username + "@admin.com"))
+                    .createdTime(LocalDateTime.now())
+                    .teamId(-1)
+                    .isAdmin(true)
+                    .build()
+            );
+            log.info("admin: " + username + "@admin.com" + ";password: " + password + "; generated");
+        }
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return AuthInterceptor.getCurrentUser();
     }
 }
