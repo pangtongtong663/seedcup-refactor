@@ -1,50 +1,34 @@
 package com.seedcup.seedcupbackend.common.api;
 
-import com.seedcup.seedcupbackend.common.controller.HelloController;
-import com.seedcup.seedcupbackend.common.controller.UserController;
-import com.seedcup.seedcupbackend.common.service.UserService;
-import lombok.val;
-import org.hibernate.validator.internal.util.logging.formatter.CollectionOfClassesObjectFormatter;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import com.seedcup.seedcupbackend.ApiUtils;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpCookie;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpSession;
 
-@EnableWebMvc
+@SpringBootTest
 @AutoConfigureMockMvc
-@SpringBootTest()
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserApiTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    private static Cookie[] cookies;
-
     @Test
     @Order(1)
-    public void login() throws Exception {
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/api/user/log_in")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+    public void login1() throws Exception {
+        /*
+         * @Author holdice
+         * @Description 测试登录成功
+         * @Date 2020/12/8 10:24 下午
+         * @Param []
+         * @return void
+         */
+        var request = ApiUtils.postBuilder("/api/user/log_in")
                 .content("{\n" +
                         "    \"username\": \"admin01@admin.com\",\n" +
                         "    \"password\": \"admin01\"\n" +
@@ -57,10 +41,52 @@ public class UserApiTest {
 
     @Test
     @Order(2)
-    public void logout() throws  Exception {
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/api/user/log_out");
+    public void login2() throws Exception {
+        /*
+         * @Author holdice
+         * @Description 测试密码错误导致登录失败
+         * @Date 2020/12/8 10:29 下午
+         * @Param []
+         * @return void
+         */
+        var request = ApiUtils.postBuilder("/api/user/log_in")
+                .content("{\n" +
+                        "    \"username\": \"admin01@admin.com\",\n" +
+                        "    \"password\": \"admin02\"\n" +
+                        "}");
         mockMvc.perform(request)
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
+                .andReturn();
+    }
+
+    @Test
+    @Order(3)
+    public void login3() throws Exception {
+        /*
+         * @Author holdice
+         * @Description 测试非法输入
+         * @Date 2020/12/8 10:29 下午
+         * @Param []
+         * @return void
+         */
+        var request = ApiUtils.postBuilder("/api/user/log_in")
+                .content("{\n" +
+                        "    \"username\": \"\",\n" +
+                        "    \"password\": \"admin02\"\n" +
+                        "}");
+        mockMvc.perform(request)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
+    }
+
+    @Test
+    @Order(5)
+    public void logout() throws Exception {
+        var request = ApiUtils.getBuilder("/api/user/log_out");
+        mockMvc.perform(request)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("107"))
                 .andReturn();
     }
 }
