@@ -73,11 +73,31 @@ public class UserApiTest {
         var request = ApiUtils.postBuilder("/api/user/log_in")
                 .content("{\n" +
                         "    \"username\": \"\",\n" +
-                        "    \"password\": \"admin02\"\n" +
+                        "    \"password\": \"admin01\"\n" +
                         "}");
         mockMvc.perform(request)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
+    }
+
+    @Test
+    @Order(4)
+    public void login4() throws Exception {
+        /*
+         * @Author holdice
+         * @Description 测试使用电话号码登录
+         * @Date 2020/12/8 10:45 下午
+         * @Param []
+         * @return void
+         */
+        var request = ApiUtils.postBuilder("/api/user/log_in")
+                .content("{\n" +
+                        "    \"username\": \"12345678901\",\n" +
+                        "    \"password\": \"admin01\"\n" +
+                        "}");
+        mockMvc.perform(request)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
     }
 
     @Test
