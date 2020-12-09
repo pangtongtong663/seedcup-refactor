@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -132,6 +134,19 @@ public class UserServiceImpl implements UserService {
             );
             log.info("admin: " + username + "@admin.com" + ";password: " + password + "; generated");
         }
+    }
+
+    @Override
+    public List<User> searchUser(@NotBlank String keyword) {
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        qw.like("username", keyword)
+                .or()
+                .like("phone_number", keyword)
+                .or()
+                .like("email", keyword);
+        List<User> results = userMapper.selectList(qw);
+        results.removeIf(User::isAdmin);
+        return results;
     }
 
     @Override

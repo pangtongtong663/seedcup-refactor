@@ -71,6 +71,12 @@ public class UserController {
     }
 
     @LoginRequired
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ResponseDto<Object> searchUserByKeyword(@RequestParam String keyword) {
+        return StandardResponse.ok(userService.searchUser(keyword));
+    }
+
+    @LoginRequired
     @RequestMapping(value = "/my_info", method = RequestMethod.GET)
     public ResponseDto<Object> getCurrentUserInfo() {
         /*

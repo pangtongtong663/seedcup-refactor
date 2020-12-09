@@ -6,6 +6,7 @@ import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
 import com.seedcup.seedcupbackend.common.po.User;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 public interface UserService {
 
@@ -18,6 +19,8 @@ public interface UserService {
     void editProfile();
 
     void generateAdminUser(String username, String password);
+
+    List<User> searchUser(String keyword);
 
     User getCurrentUser();
 }
