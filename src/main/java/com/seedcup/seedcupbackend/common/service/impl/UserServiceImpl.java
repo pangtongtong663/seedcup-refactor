@@ -2,7 +2,7 @@ package com.seedcup.seedcupbackend.common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
-import com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException;
+import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
 import com.seedcup.seedcupbackend.common.exception.UnAuthException;
 import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public void signUp(UserSignUpDto signUpDto) throws DuplicateUserInfoException {
+    public void signUp(UserSignUpDto signUpDto) throws DuplicateInfoException {
         /*
          * @Author holdice
          * @Description 提供注册服务，会进行判重处理，判重字段为[username, phoneNumber, email]，
@@ -34,7 +36,7 @@ public class UserServiceImpl implements UserService {
          * @return boolean
          * @throws com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException
          */
-        DuplicateUserInfoException e = new DuplicateUserInfoException();
+        DuplicateInfoException e = new DuplicateInfoException();
         QueryWrapper<User> qw = new QueryWrapper<>();
         qw.eq("email", signUpDto.getEmail());
         if (userMapper.selectList(qw).size() != 0) {
@@ -132,6 +134,19 @@ public class UserServiceImpl implements UserService {
             );
             log.info("admin: " + username + "@admin.com" + ";password: " + password + "; generated");
         }
+    }
+
+    @Override
+    public List<User> searchUser(@NotBlank String keyword) {
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        qw.like("username", keyword)
+                .or()
+                .like("phone_number", keyword)
+                .or()
+                .like("email", keyword);
+        List<User> results = userMapper.selectList(qw);
+        results.removeIf(User::isAdmin);
+        return results;
     }
 
     @Override

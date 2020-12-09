@@ -1,9 +1,8 @@
 package com.seedcup.seedcupbackend.common.controller;
 
-import com.baomidou.mybatisplus.extension.api.R;
 import com.seedcup.seedcupbackend.common.annotation.LoginRequired;
 import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
-import com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException;
+import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
 import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
 import com.seedcup.seedcupbackend.common.po.User;
 import com.seedcup.seedcupbackend.common.service.UserService;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/user", produces = "application/json")
@@ -36,7 +33,7 @@ public class UserController {
         try {
             userService.signUp(signUpDto);
             return StandardResponse.ok();
-        } catch (DuplicateUserInfoException e) {
+        } catch (DuplicateInfoException e) {
             return StandardResponse.duplicateInformation(e.getDuplicateInfos());
         }
     }
@@ -71,6 +68,12 @@ public class UserController {
          */
         userService.logOut(session);
         return StandardResponse.ok();
+    }
+
+    @LoginRequired
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ResponseDto<Object> searchUserByKeyword(@RequestParam String keyword) {
+        return StandardResponse.ok(userService.searchUser(keyword));
     }
 
     @LoginRequired

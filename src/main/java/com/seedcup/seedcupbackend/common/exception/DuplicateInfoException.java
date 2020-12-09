@@ -2,10 +2,10 @@ package com.seedcup.seedcupbackend.common.exception;
 
 import java.util.ArrayList;
 
-public class DuplicateUserInfoException extends RuntimeException{
+public class DuplicateInfoException extends RuntimeException{
 
     private ArrayList<String> duplicateInfos = new ArrayList<>();
-    public DuplicateUserInfoException() {
+    public DuplicateInfoException() {
         super();
     }
 
