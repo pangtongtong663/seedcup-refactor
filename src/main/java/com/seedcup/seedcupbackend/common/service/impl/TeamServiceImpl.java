@@ -6,7 +6,7 @@ import com.seedcup.seedcupbackend.common.dao.TeamMapper;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
 import com.seedcup.seedcupbackend.common.dto.TeamEditIntroductionDto;
 import com.seedcup.seedcupbackend.common.dto.TeamSignUpDto;
-import com.seedcup.seedcupbackend.common.exception.DuplicateTeamInfoException;
+import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
 import com.seedcup.seedcupbackend.common.exception.UserNotExistException;
 import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
 import com.seedcup.seedcupbackend.common.po.Team;
@@ -26,8 +26,8 @@ public class TeamServiceImpl implements TeamService {
     private UserMapper userMapper;
 
     @Override
-    public void signUp(TeamSignUpDto signUpDto) throws DuplicateTeamInfoException {
-        DuplicateTeamInfoException e = new DuplicateTeamInfoException();
+    public void signUp(TeamSignUpDto signUpDto) throws DuplicateInfoException {
+        DuplicateInfoException e = new DuplicateInfoException();
         QueryWrapper<Team> qw = new QueryWrapper<>();
         qw.eq("name", signUpDto.getTeamName());
         if(teamMapper.selectList(qw).size() != 0) {

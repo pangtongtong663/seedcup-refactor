@@ -2,7 +2,7 @@ package com.seedcup.seedcupbackend.common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
-import com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException;
+import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
 import com.seedcup.seedcupbackend.common.exception.UnAuthException;
 import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public void signUp(UserSignUpDto signUpDto) throws DuplicateUserInfoException {
+    public void signUp(UserSignUpDto signUpDto) throws DuplicateInfoException {
         /*
          * @Author holdice
          * @Description 提供注册服务，会进行判重处理，判重字段为[username, phoneNumber, email]，
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
          * @return boolean
          * @throws com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException
          */
-        DuplicateUserInfoException e = new DuplicateUserInfoException();
+        DuplicateInfoException e = new DuplicateInfoException();
         QueryWrapper<User> qw = new QueryWrapper<>();
         qw.eq("email", signUpDto.getEmail());
         if (userMapper.selectList(qw).size() != 0) {

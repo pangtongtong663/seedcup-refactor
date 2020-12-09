@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.seedcup.seedcupbackend.common.annotation.LoginRequired;
 import com.seedcup.seedcupbackend.common.dto.TeamEditIntroductionDto;
 import com.seedcup.seedcupbackend.common.dto.TeamSignUpDto;
-import com.seedcup.seedcupbackend.common.exception.DuplicateTeamInfoException;
+import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
 import com.seedcup.seedcupbackend.common.exception.UserNotExistException;
 import com.seedcup.seedcupbackend.common.service.TeamService;
 import com.seedcup.seedcupbackend.global.dto.ResponseDto;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 
@@ -41,7 +40,7 @@ public class TeamController {
         try {
             teamService.signUp(signUpDto);
             return StandardResponse.ok();
-        } catch (DuplicateTeamInfoException e) {
+        } catch (DuplicateInfoException e) {
             return StandardResponse.duplicateInformation(e.getDuplicateInfos());
         }
     }
