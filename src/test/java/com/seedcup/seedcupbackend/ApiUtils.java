@@ -5,6 +5,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+/**
+* @ClassName: ApiUtils
+* @Description: 工具类，提供有一般header的RequestBuilder
+* @author holdice
+* @date 2020/12/9 8:44 下午
+*/
+
 public class ApiUtils {
     public static MockHttpServletRequestBuilder postBuilder(String url, String host) {
         return MockMvcRequestBuilders.post(url)

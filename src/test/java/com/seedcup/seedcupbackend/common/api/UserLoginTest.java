@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserLoginTest {
 
     @Autowired
@@ -41,7 +40,6 @@ public class UserLoginTest {
                         "    \"password\": \"admin01\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
     }
 
@@ -86,7 +84,6 @@ public class UserLoginTest {
                         "    \"password\": \"admin02\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
     }
@@ -106,7 +103,6 @@ public class UserLoginTest {
                         "    \"password\": \"admin02\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
     }
 
@@ -125,7 +121,6 @@ public class UserLoginTest {
                         "    \"password\": \"admin01\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
     }
 

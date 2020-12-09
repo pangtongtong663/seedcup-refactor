@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-@TestMethodOrder(MethodOrderer.MethodName.class)
 public class UserSignupTest {
 
     @Autowired
@@ -51,7 +50,6 @@ public class UserSignupTest {
                         "    \"email\": \"hemu0710@test.com\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
 
     }
@@ -147,7 +145,6 @@ public class UserSignupTest {
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("101"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0]").value("email"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[1]").value("phoneNumber"));

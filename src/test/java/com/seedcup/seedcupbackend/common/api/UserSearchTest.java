@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestMethodOrder(MethodOrderer.MethodName.class)
 public class UserSearchTest {
 
     @Autowired
@@ -82,7 +81,6 @@ public class UserSearchTest {
                 .cookie(result.getResponse().getCookies()[0]);
 
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0]").exists());
     }
