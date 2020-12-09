@@ -110,6 +110,68 @@ public class UserSearchTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
     }
 
+    @Test
+    public void getAll1() throws Exception {
+        /*
+         * @Author holdice
+         * @Description 获取所有用户list测试，需要管理员
+         * @Date 2020/12/9 11:25 下午
+         * @Param []
+         * @return void
+         */
+        var request = ApiUtils.postBuilder("/api/user/log_in")
+                .content("{\n" +
+                        "  \"username\": \"admin01@admin.com\",\n" +
+                        "  \"password\": \"admin01\"\n" +
+                        "}");
+        var result = mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andReturn();
+        request = ApiUtils.getBuilder("/api/user/all")
+                .cookie(result.getResponse().getCookies()[0]);
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isArray());
+    }
+
+    @Test
+    public void getAll2() throws Exception {
+        /*
+         * @Author holdice
+         * @Description 测试非管理员用户尝试获取所有用户，应该返回permission denied
+         * @Date 2020/12/9 11:33 下午
+         * @Param []
+         * @return void
+         */
+        var request = ApiUtils.postBuilder("/api/user/sign_up")
+                .content("{\n" +
+                        "    \"username\": \"test2\",\n" +
+                        "    \"password\": \"123456\",\n" +
+                        "    \"school\": \"hust\",\n" +
+                        "    \"college\": \"eic\",\n" +
+                        "    \"className\": \"cs1802\",\n" +
+                        "    \"phoneNumber\": \"18707112324\",\n" +
+                        "    \"email\": \"test@qq.com\"\n" +
+                        "}");
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+
+        request = ApiUtils.postBuilder("/api/user/log_in")
+                .content("{\n" +
+                        "  \"username\": \"test@qq.com\",\n" +
+                        "  \"password\": \"123456\"\n" +
+                        "}");
+        var result = mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andReturn();
+        request = ApiUtils.getBuilder("/api/user/all")
+                .cookie(result.getResponse().getCookies()[0]);
+        mockMvc.perform(request)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("999"));
+    }
+
     @AfterEach
     public void clearDB(){
         QueryWrapper<User> qw = new QueryWrapper<>();

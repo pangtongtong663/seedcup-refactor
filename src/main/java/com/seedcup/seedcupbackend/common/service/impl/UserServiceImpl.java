@@ -22,6 +22,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserMapper userMapper;
 
@@ -152,5 +153,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getCurrentUser() {
         return AuthInterceptor.getCurrentUser();
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userMapper.selectList(null);
     }
 }

@@ -88,4 +88,17 @@ public class UserController {
          */
         return StandardResponse.ok(userService.getCurrentUser());
     }
+
+    @LoginRequired(needAdmin = true)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ResponseDto<Object> getAllUsers() {
+        /*
+         * @Author holdice
+         * @Description 获取所有用户，需要管理员权限，可以看到管理员用户
+         * @Date 2020/12/9 11:25 下午
+         * @Param []
+         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
+         */
+        return StandardResponse.ok(userService.getAllUsers());
+    }
 }

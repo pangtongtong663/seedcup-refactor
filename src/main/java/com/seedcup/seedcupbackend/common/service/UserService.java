@@ -23,4 +23,6 @@ public interface UserService {
     List<User> searchUser(String keyword);
 
     User getCurrentUser();
+
+    List<User> getAllUsers();
 }
