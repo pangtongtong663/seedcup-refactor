@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @LoginRequired
-    @RequestMapping(value = "/log_out", method = RequestMethod.GET)
+    @RequestMapping(value = "/log_out", method = RequestMethod.POST)
     public ResponseDto<Object> logOut(HttpSession session) {
         /*
          * @Author holdice

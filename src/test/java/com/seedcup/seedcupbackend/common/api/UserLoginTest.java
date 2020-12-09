@@ -60,10 +60,10 @@ public class UserLoginTest {
         var result = mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
                 .andReturn();
-        request = ApiUtils.getBuilder("/api/user/log_out");
+        request = ApiUtils.postBuilder("/api/user/log_out");
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("107"));
-        request = ApiUtils.getBuilder("/api/user/log_out")
+        request = ApiUtils.postBuilder("/api/user/log_out")
                 .cookie(result.getResponse().getCookies()[0]);
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
