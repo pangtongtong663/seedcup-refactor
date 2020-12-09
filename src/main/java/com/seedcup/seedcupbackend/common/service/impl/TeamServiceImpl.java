@@ -89,4 +89,9 @@ public class TeamServiceImpl implements TeamService {
         }
 
     }
+
+    @Override
+    public void delMember(int userId){
+
+    }
 }

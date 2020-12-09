@@ -12,4 +12,6 @@ public interface TeamService {
 
     void addMember(String usernameOrPhoneNumberOrEmail);
 
+    void delMember(int userId);
+
 }
