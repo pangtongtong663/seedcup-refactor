@@ -128,4 +128,29 @@ public class UserLoginTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
     }
+
+    @Test
+    public void getMyInfo() throws Exception {
+        /*
+         * @Author holdice
+         * @Description 测试用户登录后查看自己信息
+         * @Date 2020/12/9 7:25 下午
+         * @Param []
+         * @return void
+         */
+        var request = ApiUtils.postBuilder("/api/user/log_in")
+                .content("{\n" +
+                        "  \"username\": \"admin01@admin.com\",\n" +
+                        "  \"password\": \"admin01\"\n" +
+                        "}");
+        var result = mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andReturn();
+
+        request = ApiUtils.getBuilder("/api/user/my_info")
+                .cookie(result.getResponse().getCookies()[0]);
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.username").value("admin01"));
+    }
 }
