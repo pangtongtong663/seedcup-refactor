@@ -13,6 +13,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+/**
+* @ClassName: UserSignupTest
+* @Description: 用户注册系统测试
+* @author holdice
+* @date 2020/12/9 4:41 下午
+*/
+
 @AutoConfigureMockMvc
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.MethodName.class)

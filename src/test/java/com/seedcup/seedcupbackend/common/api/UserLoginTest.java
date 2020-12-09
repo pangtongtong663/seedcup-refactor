@@ -2,17 +2,21 @@ package com.seedcup.seedcupbackend.common.api;
 
 import com.seedcup.seedcupbackend.ApiUtils;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+/**
+ * @author holdice
+ * @ClassName: UserLoginTest
+ * @Description: 测试登录系统功能
+ * @date 2020/12/9 4:36 下午
+ */
 
 @AutoConfigureMockMvc
 @SpringBootTest
