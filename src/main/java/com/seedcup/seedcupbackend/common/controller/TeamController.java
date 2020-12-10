@@ -5,8 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.seedcup.seedcupbackend.common.annotation.LoginRequired;
 import com.seedcup.seedcupbackend.common.dto.TeamEditIntroductionDto;
 import com.seedcup.seedcupbackend.common.dto.TeamSignUpDto;
-import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
-import com.seedcup.seedcupbackend.common.exception.UserNotExistException;
+import com.seedcup.seedcupbackend.common.exception.*;
 import com.seedcup.seedcupbackend.common.service.TeamService;
 import com.seedcup.seedcupbackend.global.dto.ResponseDto;
 import com.seedcup.seedcupbackend.global.dto.StandardResponse;
@@ -40,6 +39,8 @@ public class TeamController {
         try {
             teamService.signUp(signUpDto);
             return StandardResponse.ok();
+        } catch (AlreadyInTeamException e) {
+            return StandardResponse.alreadyInTeam();
         } catch (DuplicateInfoException e) {
             return StandardResponse.duplicateInformation(e.getDuplicateInfos());
         }
@@ -55,8 +56,12 @@ public class TeamController {
         * @Param [eidtIntroductionDto]
         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
         */
-        teamService.editIntroduction(eidtIntroductionDto);
-        return StandardResponse.ok();
+        try {
+            teamService.editIntroduction(eidtIntroductionDto);
+            return StandardResponse.ok();
+        } catch (NoTeamException e) {
+            return StandardResponse.notInTeam();
+        }
     }
 
     @LoginRequired
@@ -69,8 +74,12 @@ public class TeamController {
         * @Param [request]
         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
         */
-        teamService.addMember(userId);
-        return StandardResponse.ok();
+        try {
+            teamService.addMember(userId);
+            return StandardResponse.ok();
+        } catch (NoTeamException e) {
+            return StandardResponse.notInTeam();
+        }
     }
 
     @LoginRequired
@@ -83,8 +92,12 @@ public class TeamController {
         * @Param [userId]
         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
         */
-        teamService.delMember(userId);
-        return StandardResponse.ok();
+        try {
+            teamService.delMember(userId);
+            return StandardResponse.ok();
+        } catch (NoTeamException e) {
+            return StandardResponse.notInTeam();
+        }
     }
 
     @LoginRequired

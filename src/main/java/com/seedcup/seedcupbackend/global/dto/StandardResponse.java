@@ -32,10 +32,6 @@ public class StandardResponse {
         return new ResponseDto<>("104", "http method error");
     }
 
-    public static ResponseDto<Object> userNotExist() {
-        return new ResponseDto<>("998", "user not exist");
-    }
-
     public static ResponseDto<String> notLogin() {
         return new ResponseDto<>("107", "need login");
     }
@@ -44,11 +40,23 @@ public class StandardResponse {
         return new ResponseDto<>("109", "verification code error");
     }
 
+    public static ResponseDto<String> permissionDenied() {
+        return new ResponseDto<>("999", "permission denied");
+    }
+
+    public static ResponseDto<Object> userNotExist() {
+        return new ResponseDto<>("998", "user not exist");
+    }
+
     public static ResponseDto<Object> applyCaptchaTooFrequently() {
         return new ResponseDto<>("997", "apply captcha too frequently");
     }
 
-    public static ResponseDto<String> permissionDenied() {
-        return new ResponseDto<>("999", "permission denied");
+    public static ResponseDto<Object> alreadyInTeam() {
+        return new ResponseDto<>("996", "already in team");
+    }
+
+    public static ResponseDto<Object> notInTeam() {
+        return new ResponseDto<>("995", "not yet in team");
     }
 }

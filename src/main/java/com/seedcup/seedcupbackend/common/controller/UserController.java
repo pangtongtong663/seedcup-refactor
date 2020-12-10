@@ -52,7 +52,7 @@ public class UserController {
          */
         User user = userService.logIn(loginInfo);
         if (user != null) {
-            session.setAttribute("userInfo", user);
+            session.setAttribute("userId", user.getId());
             return StandardResponse.ok();
         } else {
             return StandardResponse.fail();

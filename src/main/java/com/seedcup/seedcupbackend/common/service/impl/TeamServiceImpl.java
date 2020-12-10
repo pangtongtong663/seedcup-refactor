@@ -6,8 +6,7 @@ import com.seedcup.seedcupbackend.common.dao.TeamMapper;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
 import com.seedcup.seedcupbackend.common.dto.TeamEditIntroductionDto;
 import com.seedcup.seedcupbackend.common.dto.TeamSignUpDto;
-import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
-import com.seedcup.seedcupbackend.common.exception.UserNotExistException;
+import com.seedcup.seedcupbackend.common.exception.*;
 import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
 import com.seedcup.seedcupbackend.common.po.Team;
 import com.seedcup.seedcupbackend.common.po.User;
@@ -30,7 +29,7 @@ public class TeamServiceImpl implements TeamService {
     private UserMapper userMapper;
 
     @Override
-    public void signUp(TeamSignUpDto signUpDto) throws DuplicateInfoException {
+    public void signUp(TeamSignUpDto signUpDto) throws DuplicateInfoException, AlreadyInTeamException {
         /*
         * @Author icer
         * @Description 创建队伍
@@ -38,6 +37,7 @@ public class TeamServiceImpl implements TeamService {
         * @Param [signUpDto]
         * @return void
         */
+        checkCurrentUserTeam(false, false);
         DuplicateInfoException e = new DuplicateInfoException();
         QueryWrapper<Team> qw = new QueryWrapper<>();
         qw.eq("name", signUpDto.getTeamName());
@@ -58,21 +58,22 @@ public class TeamServiceImpl implements TeamService {
             user.setTeamId(newTeam.getId());
             userMapper.update(user, userUpdateWrapper);
             log.info(newTeam.toString());
-        }
-        else{
+        } else{
             throw e;
         }
     }
 
     @Override
-    public void editIntroduction(TeamEditIntroductionDto editIntroductionDto) {
+    public void editIntroduction(TeamEditIntroductionDto editIntroductionDto) throws NoTeamException, PermissionDeniedException {
         /*
         * @Author icer
-        * @Description 修改队伍信息
+        * @Description 修改自己队伍的信息
         * @Date 2020/12/9 20:25
         * @Param [editIntroductionDto]
         * @return void
         */
+        checkCurrentUserTeam(true, true);
+
         String newIntroduction = editIntroductionDto.getIntroduction();
         UpdateWrapper<Team> uw = new UpdateWrapper<>();
         uw.eq("leader_id", AuthInterceptor.getCurrentUser().getId());
@@ -82,7 +83,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void addMember(Integer userId){
+    public void addMember(Integer userId) throws NoTeamException, PermissionDeniedException {
         /*
         * @Author icer
         * @Description 队伍添加新成员
@@ -91,6 +92,7 @@ public class TeamServiceImpl implements TeamService {
         * @return void
         *
         */
+        checkCurrentUserTeam(true,true);
         UpdateWrapper<User> uw = new UpdateWrapper<>();
         uw.eq("id", userId);
         int teamId = AuthInterceptor.getCurrentUser().getTeamId();
@@ -99,8 +101,31 @@ public class TeamServiceImpl implements TeamService {
         userMapper.update(user, uw);
     }
 
+    private void checkCurrentUserTeam(boolean inTeam, boolean isLeader) throws NoTeamException, AlreadyInTeamException, PermissionDeniedException {
+        /*
+         * @Author holdice
+         * @Description 检查是否在队伍中,和是否是队长
+         * @Date 2020/12/10 8:55 下午
+         * @Param [inTeam, needLeader]
+         * @return void
+         */
+        User currentUser = AuthInterceptor.getCurrentUser();
+        if (inTeam) {
+            if (currentUser.getTeamId() == -1) throw new NoTeamException();
+        } else if (currentUser.getTeamId() != -1) throw new AlreadyInTeamException();
+        if (isLeader) {
+            QueryWrapper<Team> qw = new QueryWrapper<>();
+            qw.eq("leader_id", currentUser.getId());
+            if (teamMapper.selectList(qw).size() == 0) throw new PermissionDeniedException();
+        } else {
+            QueryWrapper<Team> qw = new QueryWrapper<>();
+            qw.eq("leader_id", currentUser.getId());
+            if (teamMapper.selectList(qw).size() != 0) throw new PermissionDeniedException();
+        }
+    }
+
     @Override
-    public void delMember(Integer userId){
+    public void delMember(Integer userId) throws NoTeamException, PermissionDeniedException {
         /*
         * @Author icer
         * @Description 从队伍中删除队员
@@ -108,6 +133,7 @@ public class TeamServiceImpl implements TeamService {
         * @Param [userId]
         * @return void
         */
+        checkCurrentUserTeam(true, true);
         UpdateWrapper<User> userUpdateWrapper = new UpdateWrapper<>();
         userUpdateWrapper.eq("id", userId);
         User user = new User();

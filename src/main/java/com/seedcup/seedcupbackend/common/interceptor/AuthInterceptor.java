@@ -1,14 +1,17 @@
 package com.seedcup.seedcupbackend.common.interceptor;
 
 import com.seedcup.seedcupbackend.common.annotation.LoginRequired;
+import com.seedcup.seedcupbackend.common.dao.UserMapper;
 import com.seedcup.seedcupbackend.common.exception.PermissionDeniedException;
 import com.seedcup.seedcupbackend.common.exception.UnAuthException;
 import com.seedcup.seedcupbackend.common.po.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,6 +21,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private static final ThreadLocal<User> currentUser = new ThreadLocal<>();
 
+    @Resource
+    private UserMapper userMapper;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         if (!(handler instanceof HandlerMethod)) return true;
@@ -25,7 +31,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         Method method = handlerMethod.getMethod();
         if (method.isAnnotationPresent(LoginRequired.class)) {
             LoginRequired loginRequired = method.getAnnotation(LoginRequired.class);
-            User user = (User) request.getSession().getAttribute("userInfo");
+            User user = userMapper.selectById((Integer) request.getSession().getAttribute("userId"));
             if (authLogIn(user)) {
                 if (loginRequired.needAdmin()) return authAdmin(user);
                 return true;
