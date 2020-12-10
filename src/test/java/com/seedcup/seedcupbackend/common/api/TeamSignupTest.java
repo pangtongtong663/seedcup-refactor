@@ -44,7 +44,7 @@ public class TeamSignupTest {
     }
 
     @AfterEach
-    public void closeDB(){
+    public void clearDB(){
         QueryWrapper<Team> qw = new QueryWrapper<>();
         qw.like("name", "test");
         System.out.println("after test, " + teamMapper.delete(qw) + "record(s) has been deleted");
