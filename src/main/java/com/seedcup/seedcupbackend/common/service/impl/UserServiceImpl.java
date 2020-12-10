@@ -9,6 +9,8 @@ import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
 import com.seedcup.seedcupbackend.common.po.User;
 import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
 import com.seedcup.seedcupbackend.common.service.UserService;
+import com.seedcup.seedcupbackend.global.exception.SmsCaptchaWrongException;
+import com.seedcup.seedcupbackend.global.service.SmsService;
 import com.seedcup.seedcupbackend.utils.SecurityTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
 @Service
@@ -26,17 +29,22 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private SmsService smsService;
+
     @Override
-    public void signUp(UserSignUpDto signUpDto) throws DuplicateInfoException {
+    public void signUp(UserSignUpDto signUpDto) throws DuplicateInfoException, SmsCaptchaWrongException {
         /*
          * @Author holdice
-         * @Description 提供注册服务，会进行判重处理，判重字段为[username, phoneNumber, email]，
-         * 如果有重复，会构建一个包含重复字段名list的自定义异常并抛出，由控制器处理异常。
+         * @Description 提供注册服务，首先检查验证码,会进行判重处理，判重字段为[username, phoneNumber, email]，
+         * 如果有重复，会构建一个包含重复字段名list的自定义异常并抛出，由控制器处理异常。c
          * @Date 2020/11/21 1:30 下午
          * @Param [signUpDto]
          * @return boolean
          * @throws com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException
          */
+        if (! smsService.checkSmsCode(signUpDto.getPhoneNumber(), signUpDto.getSmsCaptcha())) throw new SmsCaptchaWrongException();
+
         DuplicateInfoException e = new DuplicateInfoException();
         QueryWrapper<User> qw = new QueryWrapper<>();
         qw.eq("email", signUpDto.getEmail());
@@ -158,5 +166,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userMapper.selectList(null);
+    }
+
+    @Override
+    public void generateTestUser(String username, String password) {
+        /*
+         * @Author holdice
+         * @Description 生成测试用户，测试使用,使用 username + @test.com 登录
+         * @Date 2020/12/10 5:42 下午
+         * @Param [username, password]
+         * @return void
+         */
+        User testUser = User.builder().username(username).passwordMd5(SecurityTool.encrypt(password, username + "@test.com"))
+                .phoneNumber("123456789" + new Random().nextInt(89) + 10).className("test class").college("test co")
+                .createdTime(LocalDateTime.now()).email(username + "@test.com").isAdmin(false).school("test sc").teamId(-1)
+                .build();
+        userMapper.insert(testUser);
     }
 }

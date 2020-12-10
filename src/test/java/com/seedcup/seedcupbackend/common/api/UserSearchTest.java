@@ -46,28 +46,8 @@ public class UserSearchTest {
          * @Param []
          * @return void
          */
-        userService.signUp(
-                UserSignUpDto.builder()
-                        .username("test1")
-                        .password("123456")
-                        .className("cs1801")
-                        .college("cs")
-                        .school("hust")
-                        .email("test@hanser.com")
-                        .phoneNumber("18734892343")
-                        .build()
-        );
-        userService.signUp(
-                UserSignUpDto.builder()
-                        .username("test2")
-                        .password("123456")
-                        .className("eic1801")
-                        .college("eic")
-                        .school("hust")
-                        .email("test222@biosheep.com")
-                        .phoneNumber("18734892221")
-                        .build()
-        );
+        userService.generateTestUser("test01", "123456");
+        userService.generateTestUser("test02", "123456");
         var request = ApiUtils.postBuilder("/api/user/log_in")
                 .content("{\n" +
                         "  \"username\": \"admin01@admin.com\",\n" +
@@ -77,7 +57,7 @@ public class UserSearchTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
                 .andReturn();
         request = ApiUtils.getBuilder("/api/user/search")
-                .param("keyword", "biosheep")
+                .param("keyword", "test")
                 .cookie(result.getResponse().getCookies()[0]);
 
         mockMvc.perform(request)
@@ -144,22 +124,11 @@ public class UserSearchTest {
          * @Param []
          * @return void
          */
-        var request = ApiUtils.postBuilder("/api/user/sign_up")
-                .content("{\n" +
-                        "    \"username\": \"test2\",\n" +
-                        "    \"password\": \"123456\",\n" +
-                        "    \"school\": \"hust\",\n" +
-                        "    \"college\": \"eic\",\n" +
-                        "    \"className\": \"cs1802\",\n" +
-                        "    \"phoneNumber\": \"18707112324\",\n" +
-                        "    \"email\": \"test@qq.com\"\n" +
-                        "}");
-        mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+        userService.generateTestUser("test02", "123456");
 
-        request = ApiUtils.postBuilder("/api/user/log_in")
+        var request = ApiUtils.postBuilder("/api/user/log_in")
                 .content("{\n" +
-                        "  \"username\": \"test@qq.com\",\n" +
+                        "  \"username\": \"test02@test.com\",\n" +
                         "  \"password\": \"123456\"\n" +
                         "}");
         var result = mockMvc.perform(request)

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.seedcup.seedcupbackend.ApiUtils;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
 import com.seedcup.seedcupbackend.common.po.User;
+import com.seedcup.seedcupbackend.global.service.RedisService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,6 +31,9 @@ public class UserSignupTest {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private RedisService redisService;
+
     @Test
     public void signup1() throws Exception {
         /*
@@ -39,7 +43,15 @@ public class UserSignupTest {
          * @Param []
          * @return void
          */
-        var request = ApiUtils.postBuilder("/api/user/sign_up")
+        var request = ApiUtils.getBuilder("/api/sms/send_captcha")
+                .param("phoneNumber", "18707116948");
+
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+
+        String captcha = redisService.getValue("sms:" + "18707116948");
+
+        request = ApiUtils.postBuilder("/api/user/sign_up")
                 .content("{\n" +
                         "    \"username\": \"test1\",\n" +
                         "    \"password\": \"123456\",\n" +
@@ -47,6 +59,7 @@ public class UserSignupTest {
                         "    \"college\": \"eic\",\n" +
                         "    \"className\": \"testclass1801\",\n" +
                         "    \"phoneNumber\": \"18707116948\",\n" +
+                        "    \"smsCaptcha\": " + captcha + ",\n" +
                         "    \"email\": \"hemu0710@test.com\"\n" +
                         "}");
         mockMvc.perform(request)
@@ -58,21 +71,13 @@ public class UserSignupTest {
     public void signup2() throws Exception {
         /*
          * @Author holdice
-         * @Description 测试非法输入，错误电话号码
+         * @Description 测试获取验证码，错误电话号码格式
          * @Date 2020/12/9 1:54 下午
          * @Param []
          * @return void
          */
-        var request = ApiUtils.postBuilder("/api/user/sign_up")
-                .content("{\n" +
-                        "  \"username\": \"test2\",\n" +
-                        "  \"password\": \"123456\",\n" +
-                        "  \"school\": \"hit\",\n" +
-                        "  \"college\": \"cs\",\n" +
-                        "  \"className\": \"bala8801\",\n" +
-                        "  \"phoneNumber\": \"12345678\",\n" +
-                        "  \"email\": \"123@123.com\"\n" +
-                        "}");
+        var request = ApiUtils.getBuilder("/api/sms/send_captcha")
+                .param("phoneNumber", "187071112343");
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
     }
@@ -86,15 +91,24 @@ public class UserSignupTest {
          * @Param []
          * @return void
          */
-        var request =ApiUtils.postBuilder("/api/user/sign_up")
+
+        var request = ApiUtils.getBuilder("/api/sms/send_captcha")
+                .param("phoneNumber", "18707116946");
+
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+        String captcha = redisService.getValue("sms:" + "18707116946");
+
+        request = ApiUtils.postBuilder("/api/user/sign_up")
                 .content("{\n" +
                     "  \"username\": \"test3\",\n" +
                     "  \"password\": \"123\",\n" +
                     "  \"school\": \"hist\",\n" +
                     "  \"college\": \"cs\",\n" +
                     "  \"className\": \"sdwqe123\",\n" +
-                    "  \"phoneNumber\": \"18707116946\",\n" +
-                    "  \"email\": \"123@twxt.com\"\n" +
+                        "  \"phoneNumber\": \"18707116946\",\n" +
+                        "  \"smsCaptcha\": " + captcha + ",\n" +
+                        "  \"email\": \"123@twxt.com\"\n" +
                     "}");
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
@@ -105,19 +119,27 @@ public class UserSignupTest {
         /*
          * @Author holdice
          * @Description 测试非法输入，错误邮箱
-         * @Date 2                020/12/9 3:32 下午
+         * @Date 2020/12/9 3:32 下午
          * @Param []
          * @return void
          */
-        var request =ApiUtils.postBuilder("/api/user/sign_up")
+        var request = ApiUtils.getBuilder("/api/sms/send_captcha")
+                .param("phoneNumber", "18707116946");
+
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+        String captcha = redisService.getValue("sms:" + "18707116946");
+
+        request = ApiUtils.postBuilder("/api/user/sign_up")
                 .content("{\n" +
-                        "  \"username\": \"test4\",\n" +
-                        "  \"password\": \"123456\",\n" +
+                        "  \"username\": \"test3\",\n" +
+                        "  \"password\": \"123123\",\n" +
                         "  \"school\": \"hist\",\n" +
                         "  \"college\": \"cs\",\n" +
                         "  \"className\": \"sdwqe123\",\n" +
                         "  \"phoneNumber\": \"18707116946\",\n" +
-                        "  \"email\": \"1232twxt.com\"\n" +
+                        "  \"smsCaptcha\": " + captcha + ",\n" +
+                        "  \"email\": \"123123.com\"\n" +
                         "}");
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
@@ -132,22 +154,64 @@ public class UserSignupTest {
          * @Param []
          * @return void
          */
-        var request =ApiUtils.postBuilder("/api/user/sign_up")
+        var request = ApiUtils.getBuilder("/api/sms/send_captcha")
+                .param("phoneNumber", "18707116946");
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+        String captcha = redisService.getValue("sms:" + "18707116946");
+
+        request = ApiUtils.postBuilder("/api/user/sign_up")
                 .content("{\n" +
-                        "  \"username\": \"test5\",\n" +
-                        "  \"password\": \"123456\",\n" +
+                        "  \"username\": \"test3\",\n" +
+                        "  \"password\": \"123123\",\n" +
                         "  \"school\": \"hist\",\n" +
                         "  \"college\": \"cs\",\n" +
                         "  \"className\": \"sdwqe123\",\n" +
                         "  \"phoneNumber\": \"18707116946\",\n" +
-                        "  \"email\": \"1232@twxt.com\"\n" +
+                        "  \"smsCaptcha\": " + captcha + ",\n" +
+                        "  \"email\": \"123@ccs.com\"\n" +
                         "}");
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+
+        // 重复信息注册
+        request = ApiUtils.getBuilder("/api/sms/send_captcha")
+                .param("phoneNumber", "18707116947");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("101"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0]").value("email"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1]").value("phoneNumber"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+        captcha = redisService.getValue("sms:" + "18707116947");
+
+        request = ApiUtils.postBuilder("/api/user/sign_up")
+                .content("{\n" +
+                        "  \"username\": \"test3\",\n" +
+                        "  \"password\": \"123123\",\n" +
+                        "  \"school\": \"hist\",\n" +
+                        "  \"college\": \"cs\",\n" +
+                        "  \"className\": \"sdwqe123\",\n" +
+                        "  \"phoneNumber\": \"18707116947\",\n" +
+                        "  \"smsCaptcha\": " + captcha + ",\n" +
+                        "  \"email\": \"123@ccs.com\"\n" +
+                        "}");
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("101"));
+
+    }
+
+    @Test
+    public void signup6() throws Exception {
+        /*
+         * @Author holdice
+         * @Description 测试过快请求验证码
+         * @Date 2020/12/10 7:00 下午
+         * @Param []
+         * @return void
+         */
+        var request = ApiUtils.getBuilder("/api/sms/send_captcha")
+                .param("phoneNumber", "18707116946");
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("997"));
     }
 
     @AfterEach
@@ -155,5 +219,6 @@ public class UserSignupTest {
         QueryWrapper<User> qw = new QueryWrapper<>();
         qw.like("username", "test");
         System.out.println("after test, " + userMapper.delete(qw) + " record(s) was deleted");
+        redisService.clearRedis();
     }
 }

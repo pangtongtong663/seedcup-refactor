@@ -8,6 +8,7 @@ import com.seedcup.seedcupbackend.common.po.User;
 import com.seedcup.seedcupbackend.common.service.UserService;
 import com.seedcup.seedcupbackend.global.dto.ResponseDto;
 import com.seedcup.seedcupbackend.global.dto.StandardResponse;
+import com.seedcup.seedcupbackend.global.exception.SmsCaptchaWrongException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,8 @@ public class UserController {
         try {
             userService.signUp(signUpDto);
             return StandardResponse.ok();
+        } catch (SmsCaptchaWrongException e) {
+            return StandardResponse.captchaError();
         } catch (DuplicateInfoException e) {
             return StandardResponse.duplicateInformation(e.getDuplicateInfos());
         }

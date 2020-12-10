@@ -36,6 +36,10 @@ public class UserSignUpDto {
             , message = "Wrong format of phone number")
     private String phoneNumber;
 
+    @NotBlank(message = "Empty captcha")
+    @Length(min = 6, max = 6, message = "wrong length of captcha")
+    private String smsCaptcha;
+
     @NotBlank
     @Email(message = "Wrong format of email")
     private String email;
