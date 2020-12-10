@@ -32,7 +32,7 @@ public class TeamSignupTest {
         var result = mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
                 .andReturn();
-        request = ApiUtils.postBuilder("/api/team/signup")
+        request = ApiUtils.postBuilder("/api/team/sign_up")
                 .content("{\n" +
                         "  \"teamName\": \"test111\",\n" +
                         "  \"highestGrade\": \"2018\",\n" +

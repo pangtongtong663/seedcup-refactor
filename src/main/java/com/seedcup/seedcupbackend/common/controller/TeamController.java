@@ -60,7 +60,7 @@ public class TeamController {
     }
 
     @LoginRequired
-    @RequestMapping(value = "/addmember/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/member/add/{userId}", method = RequestMethod.POST)
     public ResponseDto<Object> addMember(@PathVariable (name = "userId") Integer userId) {
         /*
         * @Author icer
@@ -74,7 +74,7 @@ public class TeamController {
     }
 
     @LoginRequired
-    @RequestMapping(value = "/delmember/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/member/delete/{userId}", method = RequestMethod.POST)
     public ResponseDto<Object> delMember(@PathVariable (name = "userId") Integer userId) {
         /*
         * @Author icer
