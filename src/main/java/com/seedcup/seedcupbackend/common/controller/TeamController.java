@@ -28,11 +28,11 @@ public class TeamController {
     private TeamService teamService;
 
     @LoginRequired
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    @RequestMapping(value = "/sign_up", method = RequestMethod.POST)
     public ResponseDto<Object> signUp(@RequestBody TeamSignUpDto signUpDto) {
         /*
          * @Author icer
-         * @Description
+         * @Description 注册队伍
          * @Date 2020/11/26 17:26
          * @Param [signUpDto]
          * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
@@ -48,23 +48,55 @@ public class TeamController {
     @LoginRequired
     @RequestMapping(value = "/edit_introduction", method = RequestMethod.POST)
     public ResponseDto<Object> editIntroduction(@RequestBody TeamEditIntroductionDto eidtIntroductionDto) {
+        /*
+        * @Author icer
+        * @Description 修改队伍信息
+        * @Date 2020/12/9 19:57
+        * @Param [eidtIntroductionDto]
+        * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
+        */
         teamService.editIntroduction(eidtIntroductionDto);
         return StandardResponse.ok();
     }
 
     @LoginRequired
-    @RequestMapping(value = "/addmember", method = RequestMethod.POST)
-    public ResponseDto<Object> addMember(HttpServletRequest request) throws IOException {
-        try {
-            String usernameOrPhoneNumberOrEmail = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
-            if (!StringUtils.isEmpty(usernameOrPhoneNumberOrEmail)) {
-                JSONObject jsonObject = JSONObject.parseObject(usernameOrPhoneNumberOrEmail);
-                usernameOrPhoneNumberOrEmail = jsonObject.getString("usernameOrPhoneNumberOrEmail");
-            }
-            teamService.addMember(usernameOrPhoneNumberOrEmail);
-            return StandardResponse.ok();
-        } catch (UserNotExistException e){
-            return StandardResponse.userNotExist();
-        }
+    @RequestMapping(value = "/member/add/{userId}", method = RequestMethod.POST)
+    public ResponseDto<Object> addMember(@PathVariable (name = "userId") Integer userId) {
+        /*
+        * @Author icer
+        * @Description 添加队员
+        * @Date 2020/12/9 19:58
+        * @Param [request]
+        * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
+        */
+        teamService.addMember(userId);
+        return StandardResponse.ok();
+    }
+
+    @LoginRequired
+    @RequestMapping(value = "/member/delete/{userId}", method = RequestMethod.POST)
+    public ResponseDto<Object> delMember(@PathVariable (name = "userId") Integer userId) {
+        /*
+        * @Author icer
+        * @Description 删除队伍中的队员
+        * @Date 2020/12/10 15:25
+        * @Param [userId]
+        * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
+        */
+        teamService.delMember(userId);
+        return StandardResponse.ok();
+    }
+
+    @LoginRequired
+    @RequestMapping(value = "/get_all_team_member/{teamId}", method = RequestMethod.POST)
+    public ResponseDto<Object> getAllTeamMember(@PathVariable(name = "teamId") Integer teamId){
+        /*
+        * @Author icer
+        * @Description 获取队伍中所有成员列表，传入参数为队伍id
+        * @Date 2020/12/10 16:11
+        * @Param [teamId]
+        * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
+        */
+        return StandardResponse.ok(teamService.getAllTeamMember(teamId));
     }
 }
