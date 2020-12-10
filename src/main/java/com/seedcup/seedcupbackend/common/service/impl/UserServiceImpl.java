@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
                 .or()
                 .like("email", keyword);
         List<User> results = userMapper.selectList(qw);
-        results.removeIf(User::isAdmin);
+        results.removeIf(User::getIsAdmin);
         return results;
     }
 

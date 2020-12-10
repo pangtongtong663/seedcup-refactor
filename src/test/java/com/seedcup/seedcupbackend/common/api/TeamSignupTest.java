@@ -26,8 +26,8 @@ public class TeamSignupTest {
     public void signUp1() throws Exception{
         var request = ApiUtils.postBuilder("/api/user/log_in")
                 .content("{\n" +
-                        "  \"username\": \"admin01@admin.com\",\n" +
-                        "  \"password\": \"admin01\"\n" +
+                        "  \"username\": \"admin03@admin.com\",\n" +
+                        "  \"password\": \"admin03\"\n" +
                         "}");
         var result = mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))

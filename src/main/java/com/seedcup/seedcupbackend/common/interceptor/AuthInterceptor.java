@@ -45,7 +45,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private boolean authAdmin(User user) throws PermissionDeniedException {
-        if (user.isAdmin()) {
+        if (user.getIsAdmin()) {
             return true;
         } else {
             throw new PermissionDeniedException();
