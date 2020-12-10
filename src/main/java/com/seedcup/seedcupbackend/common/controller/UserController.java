@@ -8,6 +8,7 @@ import com.seedcup.seedcupbackend.common.po.User;
 import com.seedcup.seedcupbackend.common.service.UserService;
 import com.seedcup.seedcupbackend.global.dto.ResponseDto;
 import com.seedcup.seedcupbackend.global.dto.StandardResponse;
+import com.seedcup.seedcupbackend.global.exception.SmsCaptchaWrongException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,8 @@ public class UserController {
         try {
             userService.signUp(signUpDto);
             return StandardResponse.ok();
+        } catch (SmsCaptchaWrongException e) {
+            return StandardResponse.captchaError();
         } catch (DuplicateInfoException e) {
             return StandardResponse.duplicateInformation(e.getDuplicateInfos());
         }
@@ -57,7 +60,7 @@ public class UserController {
     }
 
     @LoginRequired
-    @RequestMapping(value = "/log_out", method = RequestMethod.GET)
+    @RequestMapping(value = "/log_out", method = RequestMethod.POST)
     public ResponseDto<Object> logOut(HttpSession session) {
         /*
          * @Author holdice
@@ -87,5 +90,18 @@ public class UserController {
          * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
          */
         return StandardResponse.ok(userService.getCurrentUser());
+    }
+
+    @LoginRequired(needAdmin = true)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ResponseDto<Object> getAllUsers() {
+        /*
+         * @Author holdice
+         * @Description 获取所有用户，需要管理员权限，可以看到管理员用户
+         * @Date 2020/12/9 11:25 下午
+         * @Param []
+         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
+         */
+        return StandardResponse.ok(userService.getAllUsers());
     }
 }

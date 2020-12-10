@@ -9,7 +9,7 @@ public class StandardResponse {
     }
 
     public static ResponseDto<Object> ok(Object data) {
-        return new ResponseDto<Object>("0", "success", data);
+        return new ResponseDto<>("0", "success", data);
     }
 
     public static ResponseDto<Object> fail() {
@@ -38,6 +38,14 @@ public class StandardResponse {
 
     public static ResponseDto<String> notLogin() {
         return new ResponseDto<>("107", "need login");
+    }
+
+    public static ResponseDto<Object> captchaError() {
+        return new ResponseDto<>("109", "verification code error");
+    }
+
+    public static ResponseDto<Object> applyCaptchaTooFrequently() {
+        return new ResponseDto<>("997", "apply captcha too frequently");
     }
 
     public static ResponseDto<String> permissionDenied() {

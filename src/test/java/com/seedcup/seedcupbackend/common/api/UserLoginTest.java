@@ -2,21 +2,24 @@ package com.seedcup.seedcupbackend.common.api;
 
 import com.seedcup.seedcupbackend.ApiUtils;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+/**
+ * @author holdice
+ * @ClassName: UserLoginTest
+ * @Description: 测试登录系统功能
+ * @date 2020/12/9 4:36 下午
+ */
+
 @AutoConfigureMockMvc
 @SpringBootTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserLoginTest {
 
     @Autowired
@@ -37,7 +40,6 @@ public class UserLoginTest {
                         "    \"password\": \"admin01\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
     }
 
@@ -58,10 +60,10 @@ public class UserLoginTest {
         var result = mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
                 .andReturn();
-        request = ApiUtils.getBuilder("/api/user/log_out");
+        request = ApiUtils.postBuilder("/api/user/log_out");
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("107"));
-        request = ApiUtils.getBuilder("/api/user/log_out")
+        request = ApiUtils.postBuilder("/api/user/log_out")
                 .cookie(result.getResponse().getCookies()[0]);
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
@@ -82,7 +84,6 @@ public class UserLoginTest {
                         "    \"password\": \"admin02\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
     }
@@ -102,7 +103,6 @@ public class UserLoginTest {
                         "    \"password\": \"admin02\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
     }
 
@@ -121,7 +121,31 @@ public class UserLoginTest {
                         "    \"password\": \"admin01\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+    }
+
+    @Test
+    public void getMyInfo() throws Exception {
+        /*
+         * @Author holdice
+         * @Description 测试用户登录后查看自己信息
+         * @Date 2020/12/9 7:25 下午
+         * @Param []
+         * @return void
+         */
+        var request = ApiUtils.postBuilder("/api/user/log_in")
+                .content("{\n" +
+                        "  \"username\": \"admin01@admin.com\",\n" +
+                        "  \"password\": \"admin01\"\n" +
+                        "}");
+        var result = mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andReturn();
+
+        request = ApiUtils.getBuilder("/api/user/my_info")
+                .cookie(result.getResponse().getCookies()[0]);
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.username").value("admin01"));
     }
 }
