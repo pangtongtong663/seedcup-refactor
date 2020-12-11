@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.ConstraintViolationException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -16,6 +18,12 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseDto<String> invalidValueExceptionHandler(MethodArgumentNotValidException e) {
         return StandardResponse.valueInvalid(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseBody
+    public ResponseDto<String> invalidParamExceptionHandler(ConstraintViolationException e) {
+        return StandardResponse.valueInvalid(e.getMessage().split(",")[0]);
     }
 
     @ExceptionHandler(UnAuthException.class)

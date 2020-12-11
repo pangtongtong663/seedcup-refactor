@@ -50,7 +50,7 @@ public class User implements Serializable {
     private Integer teamId;
 
     @TableField(value = "is_admin")
-    private boolean isAdmin;
+    private Boolean isAdmin;
 
     private void setId(Integer id) {
         this.id = id;

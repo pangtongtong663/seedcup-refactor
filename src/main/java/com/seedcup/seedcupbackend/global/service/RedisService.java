@@ -220,4 +220,6 @@ public interface RedisService {
      * @return
      */
     boolean removeOneOfList(String k);
+
+    boolean clearRedis();
 }

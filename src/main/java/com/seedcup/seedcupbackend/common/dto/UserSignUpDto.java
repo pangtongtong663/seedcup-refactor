@@ -27,14 +27,18 @@ public class UserSignUpDto {
     @NotBlank(message = "Empty college")
     private String college;
 
-    @NotBlank(message = "Empty className")
+    @NotBlank(message = "Empty class name")
     private String className;
 
-    @NotBlank(message = "Empty phoneNumber")
+    @NotBlank(message = "Empty phone number")
     @Length(min = 11, max = 11, message = "Wrong format of phone number")
     @Pattern(regexp = "^1([38][0-9]|4[579]|5[^4]|6[6]|7[0135678]|9[89])\\d{8}$"
             , message = "Wrong format of phone number")
     private String phoneNumber;
+
+    @NotBlank(message = "Empty captcha")
+    @Length(min = 6, max = 6, message = "wrong length of captcha")
+    private String smsCaptcha;
 
     @NotBlank
     @Email(message = "Wrong format of email")
