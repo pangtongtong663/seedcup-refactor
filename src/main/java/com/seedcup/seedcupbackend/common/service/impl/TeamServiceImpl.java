@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.seedcup.seedcupbackend.common.dao.TeamMapper;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
+import com.seedcup.seedcupbackend.common.dto.TeamInfoDto;
 import com.seedcup.seedcupbackend.common.dto.TeamUpdateDto;
 import com.seedcup.seedcupbackend.common.dto.TeamCreateDto;
 import com.seedcup.seedcupbackend.common.exception.*;
@@ -156,20 +157,18 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<User> getAllTeamMember(Integer teamId) throws NoTeamException{
+    public TeamInfoDto getTeamInfo() throws NoTeamException{
         /*
         * @Author icer
-        * @Description 获取队伍中所有成员列表，传入参数为队伍id，若传入teamId为null，则默认查询当前用户所在队伍
+        * @Description 获取队伍基本信息
         * @Date 2020/12/10 16:13
         * @Param [teamId]
         * @return java.util.List<com.seedcup.seedcupbackend.common.po.User>
         */
         checkCurrentUserTeam(true, null);
-
-        if (teamId == -1) teamId = AuthInterceptor.getCurrentUser().getTeamId();
-
         QueryWrapper<User> uqw = new QueryWrapper<>();
-        uqw.eq("team_id", teamId);
-        return userMapper.selectList(uqw);
+        Integer currentUserTeamId = AuthInterceptor.getCurrentUser().getTeamId();
+        uqw.eq("team_id", currentUserTeamId);
+        return new TeamInfoDto(teamMapper.selectById(currentUserTeamId), userMapper.selectList(uqw));
     }
 }

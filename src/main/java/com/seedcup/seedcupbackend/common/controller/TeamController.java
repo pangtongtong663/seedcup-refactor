@@ -96,8 +96,8 @@ public class TeamController {
     }
 
     @LoginRequired
-    @RequestMapping(value = "/get_all_team_member/{teamId}", method = RequestMethod.GET)
-    public ResponseDto<Object> getAllTeamMember(@PathVariable(name = "teamId") Integer teamId){
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public ResponseDto<Object> getTeamInfo(){
         /*
         * @Author icer
         * @Description 获取队伍中所有成员列表，传入参数为队伍id
@@ -105,6 +105,6 @@ public class TeamController {
         * @Param [teamId]
         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
         */
-        return StandardResponse.ok(teamService.getAllTeamMember(teamId));
+        return StandardResponse.ok(teamService.getTeamInfo());
     }
 }
