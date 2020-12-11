@@ -1,6 +1,7 @@
 package com.seedcup.seedcupbackend.common.controller;
 
 import com.seedcup.seedcupbackend.common.annotation.LoginRequired;
+import com.seedcup.seedcupbackend.common.dto.UserBasicInfo;
 import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
 import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
 import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
@@ -45,14 +46,14 @@ public class UserController {
     public ResponseDto<Object> logIn(@Valid @RequestBody UserLoginDto loginInfo, HttpSession session) {
         /*
          * @Author holdice
-         * @Description 用户登录接口
+         * @Description 用户登录接口，通过session维持登录状态
          * @Date 2020/12/7 9:07 下午
          * @Param [loginInfo, session]
          * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
          */
         User user = userService.logIn(loginInfo);
         if (user != null) {
-            session.setAttribute("userId", user.getId());
+            session.setAttribute("userBasicInfo", new UserBasicInfo(user.getId(), user.getIsAdmin()));
             return StandardResponse.ok();
         } else {
             return StandardResponse.fail();
