@@ -1,22 +1,24 @@
 package com.seedcup.seedcupbackend.common.service;
 
-import com.seedcup.seedcupbackend.common.dto.TeamEditIntroductionDto;
-import com.seedcup.seedcupbackend.common.dto.TeamSignUpDto;
+import com.seedcup.seedcupbackend.common.dto.TeamUpdateDto;
+import com.seedcup.seedcupbackend.common.dto.TeamCreateDto;
+import com.seedcup.seedcupbackend.common.exception.AlreadyInTeamException;
 import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
-import com.seedcup.seedcupbackend.common.po.Team;
+import com.seedcup.seedcupbackend.common.exception.NoTeamException;
+import com.seedcup.seedcupbackend.common.exception.PermissionDeniedException;
 import com.seedcup.seedcupbackend.common.po.User;
 
 import java.util.List;
 
 public interface TeamService {
 
-    void signUp(TeamSignUpDto signUpDto) throws DuplicateInfoException;
+    void createTeam(TeamCreateDto teamCreateDto) throws DuplicateInfoException, AlreadyInTeamException;
 
-    void editIntroduction(TeamEditIntroductionDto editIntroductionDtoDto);
+    void editTeamInfo(TeamUpdateDto editIntroductionDtoDto) throws NoTeamException, PermissionDeniedException;
 
-    void addMember(Integer userId);
+    void addMember(Integer userId) throws NoTeamException, PermissionDeniedException;
 
-    void delMember(Integer userId);
+    void delMember(Integer userId) throws NoTeamException, PermissionDeniedException;
 
     List<User> getAllTeamMember(Integer teamId);
 

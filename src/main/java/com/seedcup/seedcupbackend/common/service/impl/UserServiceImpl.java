@@ -147,6 +147,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> searchUser(@NotBlank String keyword) {
+        /*
+         * @Author holdice
+         * @Description 通过关键词搜索用户
+         * @Date 2020/12/11 4:00 下午
+         * @Param [keyword]
+         * @return java.util.List<com.seedcup.seedcupbackend.common.po.User>
+         */
         QueryWrapper<User> qw = new QueryWrapper<>();
         qw.like("username", keyword)
                 .or()
@@ -166,6 +173,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
+        /*
+         * @Author holdice
+         * @Description 只有管理员有权利调用
+         * @Date 2020/12/11 4:01 下午
+         * @Param []
+         * @return java.util.List<com.seedcup.seedcupbackend.common.po.User>
+         */
         return userMapper.selectList(null);
     }
 
