@@ -35,7 +35,7 @@ public class TeamServiceImpl implements TeamService {
         * @Param [teamCreateDto]
         * @return void
         */
-        checkCurrentUserTeam(false, false);
+        checkCurrentUserTeam(false, null);
         DuplicateInfoException e = new DuplicateInfoException();
         QueryWrapper<Team> qw = new QueryWrapper<>();
         qw.eq("name", teamCreateDto.getTeamName());
@@ -103,7 +103,7 @@ public class TeamServiceImpl implements TeamService {
         userMapper.update(user, uw);
     }
 
-    private void checkCurrentUserTeam(boolean inTeam, boolean isLeader) throws NoTeamException, AlreadyInTeamException, PermissionDeniedException {
+    private void checkCurrentUserTeam(Boolean inTeam, Boolean isLeader) throws NoTeamException, AlreadyInTeamException, PermissionDeniedException {
         /*
          * @Author holdice
          * @Description 检查是否在队伍中,和是否是队长
@@ -111,6 +111,7 @@ public class TeamServiceImpl implements TeamService {
          *              inTeam 为true时，当前用户必须在队伍中，否则抛出NoTeamException
          *              isLeader 为true时，当前用户必须为队长，否则抛出PermissionDeniedException
          *              isLeader 为false时，当前用户不允许为队长，否则抛出PermissionDeniedException
+         *              isLeader 为null时，不判断是否为队长
          * @Date 2020/12/10 8:55 下午
          * @Param [inTeam, needLeader]
          * @return void
@@ -119,14 +120,16 @@ public class TeamServiceImpl implements TeamService {
         if (inTeam) {
             if (currentUser.getTeamId() == -1) throw new NoTeamException();
         } else if (currentUser.getTeamId() != -1) throw new AlreadyInTeamException();
-        if (isLeader) {
-            QueryWrapper<Team> qw = new QueryWrapper<>();
-            qw.eq("leader_id", currentUser.getId());
-            if (teamMapper.selectList(qw).size() == 0) throw new PermissionDeniedException();
-        } else {
-            QueryWrapper<Team> qw = new QueryWrapper<>();
-            qw.eq("leader_id", currentUser.getId());
-            if (teamMapper.selectList(qw).size() != 0) throw new PermissionDeniedException();
+        if (isLeader != null) {
+            if (isLeader) {
+                QueryWrapper<Team> qw = new QueryWrapper<>();
+                qw.eq("leader_id", currentUser.getId());
+                if (teamMapper.selectList(qw).size() == 0) throw new PermissionDeniedException();
+            } else {
+                QueryWrapper<Team> qw = new QueryWrapper<>();
+                qw.eq("leader_id", currentUser.getId());
+                if (teamMapper.selectList(qw).size() != 0) throw new PermissionDeniedException();
+            }
         }
     }
 
@@ -161,9 +164,9 @@ public class TeamServiceImpl implements TeamService {
         * @Param [teamId]
         * @return java.util.List<com.seedcup.seedcupbackend.common.po.User>
         */
-        checkCurrentUserTeam(true, false);
+        checkCurrentUserTeam(true, null);
 
-        if (teamId == null) teamId = AuthInterceptor.getCurrentUser().getTeamId();
+        if (teamId == -1) teamId = AuthInterceptor.getCurrentUser().getTeamId();
 
         QueryWrapper<User> uqw = new QueryWrapper<>();
         uqw.eq("team_id", teamId);

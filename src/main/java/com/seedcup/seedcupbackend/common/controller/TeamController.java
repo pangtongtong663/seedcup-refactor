@@ -96,7 +96,7 @@ public class TeamController {
     }
 
     @LoginRequired
-    @RequestMapping(value = "/get_all_team_member/{teamId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/get_all_team_member/{teamId}", method = RequestMethod.GET)
     public ResponseDto<Object> getAllTeamMember(@PathVariable(name = "teamId") Integer teamId){
         /*
         * @Author icer
