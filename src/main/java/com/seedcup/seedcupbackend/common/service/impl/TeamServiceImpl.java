@@ -4,19 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.seedcup.seedcupbackend.common.dao.TeamMapper;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
-import com.seedcup.seedcupbackend.common.dto.TeamEditIntroductionDto;
-import com.seedcup.seedcupbackend.common.dto.TeamSignUpDto;
+import com.seedcup.seedcupbackend.common.dto.TeamUpdateDto;
+import com.seedcup.seedcupbackend.common.dto.TeamCreateDto;
 import com.seedcup.seedcupbackend.common.exception.*;
 import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
 import com.seedcup.seedcupbackend.common.po.Team;
 import com.seedcup.seedcupbackend.common.po.User;
 import com.seedcup.seedcupbackend.common.service.TeamService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.util.IndexedReadOnlyStringMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -29,26 +27,26 @@ public class TeamServiceImpl implements TeamService {
     private UserMapper userMapper;
 
     @Override
-    public void signUp(TeamSignUpDto signUpDto) throws DuplicateInfoException, AlreadyInTeamException {
+    public void createTeam(TeamCreateDto teamCreateDto) throws DuplicateInfoException, AlreadyInTeamException {
         /*
         * @Author icer
         * @Description 创建队伍
         * @Date 2020/12/9 20:24
-        * @Param [signUpDto]
+        * @Param [teamCreateDto]
         * @return void
         */
         checkCurrentUserTeam(false, false);
         DuplicateInfoException e = new DuplicateInfoException();
         QueryWrapper<Team> qw = new QueryWrapper<>();
-        qw.eq("name", signUpDto.getTeamName());
+        qw.eq("name", teamCreateDto.getTeamName());
         if(teamMapper.selectList(qw).size() != 0) {
             e.addDuplicateInfoField("teamName");
         }
         if(teamMapper.selectList(qw).size() == 0){
             Team newTeam = Team.builder()
-                    .name(signUpDto.getTeamName())
-                    .highestGrade(signUpDto.getHighestGrade())
-                    .introduction(signUpDto.getIntroduction())
+                    .name(teamCreateDto.getTeamName())
+                    .highestGrade(teamCreateDto.getHighestGrade())
+                    .introduction(teamCreateDto.getIntroduction())
                     .leaderId(AuthInterceptor.getCurrentUser().getId())
                     .build();
             teamMapper.insert(newTeam);
@@ -64,7 +62,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void editIntroduction(TeamEditIntroductionDto editIntroductionDto) throws NoTeamException, PermissionDeniedException {
+    public void editTeamInfo(TeamUpdateDto teamUpdateDto) throws NoTeamException, PermissionDeniedException {
         /*
         * @Author icer
         * @Description 修改自己队伍的信息
@@ -74,7 +72,7 @@ public class TeamServiceImpl implements TeamService {
         */
         checkCurrentUserTeam(true, true);
 
-        String newIntroduction = editIntroductionDto.getIntroduction();
+        String newIntroduction = teamUpdateDto.getIntroduction();
         UpdateWrapper<Team> uw = new UpdateWrapper<>();
         uw.eq("leader_id", AuthInterceptor.getCurrentUser().getId());
         Team team = new Team();
@@ -105,6 +103,10 @@ public class TeamServiceImpl implements TeamService {
         /*
          * @Author holdice
          * @Description 检查是否在队伍中,和是否是队长
+         *              inTeam 为false时，不允许当前队伍在任何队伍中，否则抛出 AlreadyInTeamException
+         *              inTeam 为true时，当前用户必须在队伍中，否则抛出NoTeamException
+         *              isLeader 为true时，当前用户必须为队长，否则抛出PermissionDeniedException
+         *              isLeader 为false时，当前用户不允许为队长，否则抛出PermissionDeniedException
          * @Date 2020/12/10 8:55 下午
          * @Param [inTeam, needLeader]
          * @return void
@@ -142,16 +144,20 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<User> getAllTeamMember(Integer teamId) {
+    public List<User> getAllTeamMember(Integer teamId) throws NoTeamException{
         /*
         * @Author icer
-        * @Description 获取队伍中所有成员列表，传入参数为队伍id
+        * @Description 获取队伍中所有成员列表，传入参数为队伍id，若传入teamId为null，则默认查询当前用户所在队伍
         * @Date 2020/12/10 16:13
         * @Param [teamId]
         * @return java.util.List<com.seedcup.seedcupbackend.common.po.User>
         */
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("team_id", teamId);
-        return userMapper.selectList(userQueryWrapper);
+        checkCurrentUserTeam(true, false);
+
+        if (teamId == null) teamId = AuthInterceptor.getCurrentUser().getTeamId();
+
+        QueryWrapper<User> uqw = new QueryWrapper<>();
+        uqw.eq("team_id", teamId);
+        return userMapper.selectList(uqw);
     }
 }

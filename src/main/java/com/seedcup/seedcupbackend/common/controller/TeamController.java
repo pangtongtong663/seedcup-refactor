@@ -1,22 +1,15 @@
 package com.seedcup.seedcupbackend.common.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.seedcup.seedcupbackend.common.annotation.LoginRequired;
-import com.seedcup.seedcupbackend.common.dto.TeamEditIntroductionDto;
-import com.seedcup.seedcupbackend.common.dto.TeamSignUpDto;
+import com.seedcup.seedcupbackend.common.dto.TeamUpdateDto;
+import com.seedcup.seedcupbackend.common.dto.TeamCreateDto;
 import com.seedcup.seedcupbackend.common.exception.*;
 import com.seedcup.seedcupbackend.common.service.TeamService;
 import com.seedcup.seedcupbackend.global.dto.ResponseDto;
 import com.seedcup.seedcupbackend.global.dto.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StreamUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 
 @RestController
@@ -28,7 +21,7 @@ public class TeamController {
 
     @LoginRequired
     @RequestMapping(value = "/sign_up", method = RequestMethod.POST)
-    public ResponseDto<Object> signUp(@RequestBody TeamSignUpDto signUpDto) {
+    public ResponseDto<Object> signUp(@RequestBody TeamCreateDto signUpDto) {
         /*
          * @Author icer
          * @Description 注册队伍
@@ -37,7 +30,7 @@ public class TeamController {
          * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
          */
         try {
-            teamService.signUp(signUpDto);
+            teamService.createTeam(signUpDto);
             return StandardResponse.ok();
         } catch (AlreadyInTeamException e) {
             return StandardResponse.alreadyInTeam();
@@ -48,7 +41,7 @@ public class TeamController {
 
     @LoginRequired
     @RequestMapping(value = "/edit_introduction", method = RequestMethod.POST)
-    public ResponseDto<Object> editIntroduction(@RequestBody TeamEditIntroductionDto eidtIntroductionDto) {
+    public ResponseDto<Object> editIntroduction(@RequestBody TeamUpdateDto teamUpdateDto) {
         /*
         * @Author icer
         * @Description 修改队伍信息
@@ -57,7 +50,7 @@ public class TeamController {
         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
         */
         try {
-            teamService.editIntroduction(eidtIntroductionDto);
+            teamService.editTeamInfo(teamUpdateDto);
             return StandardResponse.ok();
         } catch (NoTeamException e) {
             return StandardResponse.notInTeam();

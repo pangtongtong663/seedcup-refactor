@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TeamSignupTest {
+public class TeamCreateTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -33,18 +33,20 @@ public class TeamSignupTest {
     private UserService userService;
 
     @Test
-    public void signup1() throws Exception {
+    public void create1() throws Exception {
         /*
          * @Author icer
-         * @Description 队伍注册正常测试
+         * @Description 队伍创建正常测试
          * @Date 2020/12/10 9:06 下午
          * @Param []
          * @return void
          */
+
+        userService.generateTestUser("test01", "123456");
         var request = ApiUtils.postBuilder("/api/user/log_in")
                 .content("{\n" +
-                        "  \"username\": \"admin03@admin.com\",\n" +
-                        "  \"password\": \"admin03\"\n" +
+                        "  \"username\": \"test01@test.com\",\n" +
+                        "  \"password\": \"123456\"\n" +
                         "}");
         var result = mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
@@ -61,10 +63,10 @@ public class TeamSignupTest {
     }
 
     @Test
-    public void signup2() throws Exception {
+    public void create2() throws Exception {
         /*
          * @Author holdice
-         * @Description 测试已有队伍后进行队伍注册
+         * @Description 测试已有队伍后进行队伍创建
          * @Date 2020/12/10 9:13 下午
          * @Param []
          * @return void

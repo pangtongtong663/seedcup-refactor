@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class TeamEditIntroductionDto {
+public class TeamUpdateDto {
 
     private String introduction;
 
