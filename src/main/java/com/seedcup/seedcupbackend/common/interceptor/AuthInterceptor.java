@@ -100,4 +100,8 @@ public class AuthInterceptor implements HandlerInterceptor {
          */
         return userMapper.selectById(currentUserBasicInfo.get().getUserId());
     }
+
+    public static Integer getCurrentUserId() {
+        return currentUserBasicInfo.get().getUserId();
+    }
 }

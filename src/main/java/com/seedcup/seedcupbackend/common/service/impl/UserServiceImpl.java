@@ -1,13 +1,13 @@
 package com.seedcup.seedcupbackend.common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
-import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
 import com.seedcup.seedcupbackend.common.dao.UserMapper;
+import com.seedcup.seedcupbackend.common.dto.UserLoginDto;
+import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
+import com.seedcup.seedcupbackend.common.exception.DuplicateInfoException;
 import com.seedcup.seedcupbackend.common.exception.UnAuthException;
 import com.seedcup.seedcupbackend.common.interceptor.AuthInterceptor;
 import com.seedcup.seedcupbackend.common.po.User;
-import com.seedcup.seedcupbackend.common.dto.UserSignUpDto;
 import com.seedcup.seedcupbackend.common.service.UserService;
 import com.seedcup.seedcupbackend.global.exception.SmsCaptchaWrongException;
 import com.seedcup.seedcupbackend.global.service.SmsService;
@@ -43,7 +43,8 @@ public class UserServiceImpl implements UserService {
          * @return boolean
          * @throws com.seedcup.seedcupbackend.common.exception.DuplicateUserInfoException
          */
-        if (! smsService.checkSmsCode(signUpDto.getPhoneNumber(), signUpDto.getSmsCaptcha())) throw new SmsCaptchaWrongException();
+        if (!smsService.checkSmsCode(signUpDto.getPhoneNumber(), signUpDto.getSmsCaptcha()))
+            throw new SmsCaptchaWrongException();
 
         DuplicateInfoException e = new DuplicateInfoException();
         QueryWrapper<User> qw = new QueryWrapper<>();
@@ -70,8 +71,7 @@ public class UserServiceImpl implements UserService {
                     .build();
             userMapper.insert(newUser);
             log.info(newUser.toString());
-        }
-        else {
+        } else {
             throw e;
         }
     }
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
         qw.or();
         qw.eq("phone_number", emailOrPhoneNumber);
         for (User user : userMapper.selectList(qw)
-             ) {
+        ) {
             if (SecurityTool.match(user.getPasswordMd5(), loginInfo.getPassword(), user.getEmail())) {
                 user.setPasswordMd5("");
                 return user;
@@ -134,12 +134,12 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             userMapper.insert(
                     User.builder()
-                    .username(username).className("").college("").email(username + "@admin.com").phoneNumber("123456789" + username.substring(username.length() - 2)).school("")
-                    .passwordMd5(SecurityTool.encrypt(password,username + "@admin.com"))
-                    .createdTime(LocalDateTime.now())
-                    .teamId(-1)
-                    .isAdmin(true)
-                    .build()
+                            .username(username).className("").college("").email(username + "@admin.com").phoneNumber("123456789" + username.substring(username.length() - 2)).school("")
+                            .passwordMd5(SecurityTool.encrypt(password, username + "@admin.com"))
+                            .createdTime(LocalDateTime.now())
+                            .teamId(-1)
+                            .isAdmin(true)
+                            .build()
             );
             log.info("admin: " + username + "@admin.com" + ";password: " + password + "; generated");
         }
@@ -154,7 +154,8 @@ public class UserServiceImpl implements UserService {
                 .or()
                 .like("email", keyword);
         List<User> results = userMapper.selectList(qw);
-        results.removeIf(User::getIsAdmin);
+        results.removeIf(user -> user.getIsAdmin());
+        results.removeIf(user -> user.getId() == AuthInterceptor.getCurrentUserId());
         return results;
     }
 
