@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService {
                 .like("email", keyword);
         List<User> results = userMapper.selectList(qw);
         results.removeIf(user -> user.getIsAdmin());
-        results.removeIf(user -> user.getId() == AuthInterceptor.getCurrentUserId());
+        results.removeIf(user -> user.getId().equals(AuthInterceptor.getCurrentUserId()));
         return results;
     }
 

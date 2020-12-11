@@ -41,17 +41,16 @@ public class UserSearchTest {
     public void search1() throws Exception {
         /*
          * @Author holdice
-         * @Description 测试搜索用户功能
+         * @Description 测试搜索用户功能,不应该能搜到自己
          * @Date 2020/12/9 7:04 下午
          * @Param []
          * @return void
          */
         userService.generateTestUser("test01", "123456");
-        userService.generateTestUser("test02", "123456");
         var request = ApiUtils.postBuilder("/api/user/log_in")
                 .content("{\n" +
-                        "  \"username\": \"admin01@admin.com\",\n" +
-                        "  \"password\": \"admin01\"\n" +
+                        "  \"username\": \"test01@test.com\",\n" +
+                        "  \"password\": \"123456\"\n" +
                         "}");
         var result = mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
@@ -62,7 +61,7 @@ public class UserSearchTest {
 
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0]").exists());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
     }
 
     @Test
