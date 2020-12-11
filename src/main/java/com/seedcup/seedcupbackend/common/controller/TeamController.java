@@ -20,8 +20,8 @@ public class TeamController {
     private TeamService teamService;
 
     @LoginRequired
-    @RequestMapping(value = "/sign_up", method = RequestMethod.POST)
-    public ResponseDto<Object> signUp(@RequestBody TeamCreateDto signUpDto) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public ResponseDto<Object> createTeam(@RequestBody TeamCreateDto signUpDto) {
         /*
          * @Author icer
          * @Description 注册队伍
@@ -40,8 +40,8 @@ public class TeamController {
     }
 
     @LoginRequired
-    @RequestMapping(value = "/edit_introduction", method = RequestMethod.POST)
-    public ResponseDto<Object> editIntroduction(@RequestBody TeamUpdateDto teamUpdateDto) {
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public ResponseDto<Object> editTeamInfo(@RequestBody TeamUpdateDto teamUpdateDto) {
         /*
         * @Author icer
         * @Description 修改队伍信息

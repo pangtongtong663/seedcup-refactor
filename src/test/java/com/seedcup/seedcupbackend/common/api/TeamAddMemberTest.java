@@ -41,6 +41,7 @@ public class TeamAddMemberTest {
     @Test
     public void addMember1() throws Exception{
         userService.generateTestUser("test01", "123456");
+        userService.generateTestUser("test02", "123456");
         var request = ApiUtils.postBuilder("/api/user/log_in")
                 .content("{\n" +
                         "  \"username\": \"test01@test.com\",\n" +
@@ -51,7 +52,7 @@ public class TeamAddMemberTest {
                 .andReturn();
         var cookie = result.getResponse().getCookies()[0];
 
-        request = ApiUtils.postBuilder("/api/team/sign_up")
+        request = ApiUtils.postBuilder("/api/team/create")
                 .content("{\n" +
                         "  \"teamName\": \"test111\",\n" +
                         "  \"highestGrade\": \"2018\",\n" +

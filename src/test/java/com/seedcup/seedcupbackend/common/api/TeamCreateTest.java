@@ -51,7 +51,7 @@ public class TeamCreateTest {
         var result = mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
                 .andReturn();
-        request = ApiUtils.postBuilder("/api/team/sign_up")
+        request = ApiUtils.postBuilder("/api/team/create")
                 .content("{\n" +
                         "  \"teamName\": \"test111\",\n" +
                         "  \"highestGrade\": \"2018\",\n" +
@@ -81,7 +81,7 @@ public class TeamCreateTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
                 .andReturn();
         var cookie = result.getResponse().getCookies()[0];
-        request = ApiUtils.postBuilder("/api/team/sign_up")
+        request = ApiUtils.postBuilder("/api/team/create")
                 .content("{\n" +
                         "  \"teamName\": \"test111\",\n" +
                         "  \"highestGrade\": \"2018\",\n" +
@@ -90,7 +90,7 @@ public class TeamCreateTest {
                 .cookie(cookie);
         mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
-        request = ApiUtils.postBuilder("/api/team/sign_up")
+        request = ApiUtils.postBuilder("/api/team/create")
                 .content("{\n" +
                         "  \"teamName\": \"test222\",\n" +
                         "  \"highestGrade\": \"2018\",\n" +
