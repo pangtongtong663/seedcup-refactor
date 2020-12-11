@@ -81,7 +81,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void addMember(Integer userId) throws NoTeamException, PermissionDeniedException {
+    public void addMember(Integer userId) throws NoTeamException, PermissionDeniedException, AlreadyInTeamException {
         /*
         * @Author icer
         * @Description 队伍添加新成员
@@ -91,6 +91,10 @@ public class TeamServiceImpl implements TeamService {
         *
         */
         checkCurrentUserTeam(true,true);
+        //判断目标用户是否是自己
+        if (userId.equals(AuthInterceptor.getCurrentUserId())) throw new PermissionDeniedException();
+        //判断目标是否已有队伍，如果有，抛出异常
+        if (userMapper.selectById(userId).getTeamId() != -1) throw new AlreadyInTeamException();
         UpdateWrapper<User> uw = new UpdateWrapper<>();
         uw.eq("id", userId);
         int teamId = AuthInterceptor.getCurrentUser().getTeamId();
@@ -136,6 +140,11 @@ public class TeamServiceImpl implements TeamService {
         * @return void
         */
         checkCurrentUserTeam(true, true);
+        //检查该用户是否是自己
+        if (userId.equals(AuthInterceptor.getCurrentUserId())) throw new PermissionDeniedException();
+        //检查目标用户是否和当前用户在同一队伍内
+        if (!userMapper.selectById(userId).getTeamId().equals(AuthInterceptor.getCurrentUser().getTeamId()))
+            throw new PermissionDeniedException();
         UpdateWrapper<User> userUpdateWrapper = new UpdateWrapper<>();
         userUpdateWrapper.eq("id", userId);
         User user = new User();

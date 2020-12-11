@@ -72,6 +72,8 @@ public class TeamController {
             return StandardResponse.ok();
         } catch (NoTeamException e) {
             return StandardResponse.notInTeam();
+        } catch (AlreadyInTeamException e) {
+            return StandardResponse.alreadyInTeam();
         }
     }
 
