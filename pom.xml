@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.seedcup</groupId>
     <artifactId>seedcup-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.5.0-DEMO</version>
     <name>seedcup-backend</name>
     <description>seedcup-backend</description>
 
