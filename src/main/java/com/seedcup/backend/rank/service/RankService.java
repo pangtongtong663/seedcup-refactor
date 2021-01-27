@@ -1,5 +1,6 @@
 package com.seedcup.backend.rank.service;
 
+import com.seedcup.backend.global.dto.SheetDto;
 import com.seedcup.backend.rank.dto.CommitCreateDto;
 import com.seedcup.backend.rank.dto.CommitResultDto;
 import com.seedcup.backend.rank.dto.RankInfoDto;
@@ -12,5 +13,5 @@ public interface RankService {
 
     List<CommitResultDto> getResult();
 
-    List<RankInfoDto> getRankList(Integer gameStatus);
+    SheetDto<RankInfoDto> getRankList(Integer gameStatus);
 }

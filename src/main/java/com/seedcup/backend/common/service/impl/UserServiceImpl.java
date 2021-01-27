@@ -193,7 +193,7 @@ public class UserServiceImpl implements UserService {
          * @return void
          */
         User testUser = User.builder().username(username).passwordMd5(SecurityTool.encrypt(password, username + "@test.com"))
-                .phoneNumber("123456789" + new Random().nextInt(89) + 10).className("test class").college("test co")
+                .phoneNumber("123456789" + (new Random().nextInt(89) + 10)).className("test class").college("test co")
                 .createdTime(LocalDateTime.now()).email(username + "@test.com").isAdmin(false).school("test sc").teamId(-1)
                 .build();
         userMapper.insert(testUser);
