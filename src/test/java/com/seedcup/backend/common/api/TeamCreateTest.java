@@ -49,7 +49,7 @@ public class TeamCreateTest {
                         "  \"password\": \"123456\"\n" +
                         "}");
         var result = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
         request = ApiUtils.postBuilder("/api/team/create")
                 .content("{\n" +
@@ -59,7 +59,7 @@ public class TeamCreateTest {
                         "}")
                 .cookie(result.getResponse().getCookies()[0]);
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class TeamCreateTest {
                         "  \"password\": \"123456\"\n" +
                         "}");
         var result = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
         var cookie = result.getResponse().getCookies()[0];
         request = ApiUtils.postBuilder("/api/team/create")
@@ -89,7 +89,7 @@ public class TeamCreateTest {
                         "}")
                 .cookie(cookie);
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
         request = ApiUtils.postBuilder("/api/team/create")
                 .content("{\n" +
                         "  \"teamName\": \"test222\",\n" +
@@ -98,7 +98,7 @@ public class TeamCreateTest {
                         "}")
                 .cookie(cookie);
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("996"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("109"));
     }
 
     @BeforeEach

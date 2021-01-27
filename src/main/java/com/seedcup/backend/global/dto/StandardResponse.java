@@ -5,15 +5,15 @@ import java.util.ArrayList;
 public class StandardResponse {
 
     public static ResponseDto<Object> ok() {
-        return new ResponseDto<>("0", "success");
+        return new ResponseDto<>("100", "success");
     }
 
     public static ResponseDto<Object> ok(Object data) {
-        return new ResponseDto<>("0", "success", data);
+        return new ResponseDto<>("100", "success", data);
     }
 
     public static ResponseDto<Object> fail() {
-        return new ResponseDto<>("100", "failed");
+        return new ResponseDto<>("-1", "failed");
     }
 
     public static ResponseDto<Object> unknown() {
@@ -25,38 +25,38 @@ public class StandardResponse {
     }
 
     public static ResponseDto<String> valueInvalid(String invalidInfo) {
-        return new ResponseDto<>("103", "value invalid", invalidInfo);
+        return new ResponseDto<>("102", "value invalid", invalidInfo);
     }
 
     public static ResponseDto<String> wrongHttpMethod() {
-        return new ResponseDto<>("104", "http method error");
+        return new ResponseDto<>("103", "http method error");
     }
 
     public static ResponseDto<String> notLogin() {
-        return new ResponseDto<>("107", "need login");
+        return new ResponseDto<>("104", "need login");
     }
 
     public static ResponseDto<Object> captchaError() {
-        return new ResponseDto<>("109", "verification code error");
+        return new ResponseDto<>("105", "verification code error");
     }
 
     public static ResponseDto<String> permissionDenied() {
-        return new ResponseDto<>("999", "permission denied");
+        return new ResponseDto<>("106", "permission denied");
     }
 
     public static ResponseDto<Object> userNotExist() {
-        return new ResponseDto<>("998", "user not exist");
+        return new ResponseDto<>("107", "user not exist");
     }
 
     public static ResponseDto<Object> applyCaptchaTooFrequently() {
-        return new ResponseDto<>("997", "apply captcha too frequently");
+        return new ResponseDto<>("108", "apply captcha too frequently");
     }
 
     public static ResponseDto<Object> alreadyInTeam() {
-        return new ResponseDto<>("996", "already in team");
+        return new ResponseDto<>("109", "already in team");
     }
 
     public static ResponseDto<String> notInTeam() {
-        return new ResponseDto<>("995", "not yet in team");
+        return new ResponseDto<>("110", "not yet in team");
     }
 }

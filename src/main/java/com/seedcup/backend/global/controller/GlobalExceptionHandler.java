@@ -5,6 +5,7 @@ import com.seedcup.backend.common.exception.PermissionDeniedException;
 import com.seedcup.backend.common.exception.UnAuthException;
 import com.seedcup.backend.global.dto.ResponseDto;
 import com.seedcup.backend.global.dto.StandardResponse;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -43,5 +44,11 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseDto<String> notInTeamHandler() {
         return StandardResponse.notInTeam();
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseBody
+    public ResponseDto<String> wrongHttpMethod() {
+        return StandardResponse.wrongHttpMethod();
     }
 }

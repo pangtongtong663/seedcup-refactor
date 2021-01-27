@@ -37,7 +37,7 @@ public class UserLoginTest {
                         "    \"password\": \"admin01\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
     }
 
     @Test
@@ -55,15 +55,15 @@ public class UserLoginTest {
                         "    \"password\": \"admin01\"\n" +
                         "}");
         var result = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
         request = ApiUtils.postBuilder("/api/user/log_out");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("107"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("104"));
         request = ApiUtils.postBuilder("/api/user/log_out")
                 .cookie(result.getResponse().getCookies()[0]);
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class UserLoginTest {
                         "    \"password\": \"admin02\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("-1"))
                 .andReturn();
     }
 
@@ -100,7 +100,7 @@ public class UserLoginTest {
                         "    \"password\": \"admin02\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("102"));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class UserLoginTest {
                         "    \"password\": \"admin01\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
     }
 
     @Test
@@ -136,13 +136,13 @@ public class UserLoginTest {
                         "  \"password\": \"admin01\"\n" +
                         "}");
         var result = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
 
         request = ApiUtils.getBuilder("/api/user/my_info")
                 .cookie(result.getResponse().getCookies()[0]);
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.username").value("admin01"));
     }
 }

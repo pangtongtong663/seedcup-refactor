@@ -45,7 +45,7 @@ public class UserSignupTest {
                 .param("phoneNumber", "18707116948");
 
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
 
         String captcha = redisService.getValue("sms:" + "18707116948");
 
@@ -61,7 +61,7 @@ public class UserSignupTest {
                         "    \"email\": \"hemu0710@test.com\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
 
     }
 
@@ -77,7 +77,7 @@ public class UserSignupTest {
         var request = ApiUtils.getBuilder("/api/sms/send_captcha")
                 .param("phoneNumber", "187071112343");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("102"));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class UserSignupTest {
                 .param("phoneNumber", "18707116946");
 
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
         String captcha = redisService.getValue("sms:" + "18707116946");
 
         request = ApiUtils.postBuilder("/api/user/sign_up")
@@ -109,7 +109,7 @@ public class UserSignupTest {
                         "  \"email\": \"123@twxt.com\"\n" +
                     "}");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("102"));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class UserSignupTest {
                 .param("phoneNumber", "18707116946");
 
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
         String captcha = redisService.getValue("sms:" + "18707116946");
 
         request = ApiUtils.postBuilder("/api/user/sign_up")
@@ -140,7 +140,7 @@ public class UserSignupTest {
                         "  \"email\": \"123123.com\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("103"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("102"));
     }
 
     @Test
@@ -155,7 +155,7 @@ public class UserSignupTest {
         var request = ApiUtils.getBuilder("/api/sms/send_captcha")
                 .param("phoneNumber", "18707116946");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
         String captcha = redisService.getValue("sms:" + "18707116946");
 
         request = ApiUtils.postBuilder("/api/user/sign_up")
@@ -170,13 +170,13 @@ public class UserSignupTest {
                         "  \"email\": \"123@ccs.com\"\n" +
                         "}");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
 
         // 重复信息注册
         request = ApiUtils.getBuilder("/api/sms/send_captcha")
                 .param("phoneNumber", "18707116947");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
         captcha = redisService.getValue("sms:" + "18707116947");
 
         request = ApiUtils.postBuilder("/api/user/sign_up")
@@ -207,9 +207,9 @@ public class UserSignupTest {
         var request = ApiUtils.getBuilder("/api/sms/send_captcha")
                 .param("phoneNumber", "18707116946");
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("997"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("108"));
     }
 
     @AfterEach

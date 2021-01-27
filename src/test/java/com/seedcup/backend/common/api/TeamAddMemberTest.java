@@ -45,7 +45,7 @@ public class TeamAddMemberTest {
                         "  \"password\": \"123456\"\n" +
                         "}");
         var result = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
         var cookie = result.getResponse().getCookies()[0];
 
@@ -57,12 +57,12 @@ public class TeamAddMemberTest {
                         "}")
                 .cookie(cookie);
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
 
         request = ApiUtils.getBuilder("/api/user/search?keyword=test")
                 .cookie(cookie);
         result = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
         JSONObject jsonObject = JSON.parseObject(result.getResponse().getContentAsString());
         System.out.println(jsonObject.getJSONArray("data").getJSONObject(0).getInteger("id"));
@@ -70,7 +70,7 @@ public class TeamAddMemberTest {
                 .getContentAsString()).getJSONArray("data").getJSONObject(0).getInteger("id")))
                 .cookie(cookie);
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"));
     }
 
     @AfterEach

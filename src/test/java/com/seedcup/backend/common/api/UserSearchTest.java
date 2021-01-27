@@ -50,14 +50,14 @@ public class UserSearchTest {
                         "  \"password\": \"123456\"\n" +
                         "}");
         var result = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
         request = ApiUtils.getBuilder("/api/user/search")
                 .param("keyword", "test")
                 .cookie(result.getResponse().getCookies()[0]);
 
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
     }
 
@@ -76,13 +76,13 @@ public class UserSearchTest {
                         "  \"password\": \"admin01\"\n" +
                         "}");
         var result = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
         request = ApiUtils.getBuilder("/api/user/search")
                 .param("keyword", "admin")
                 .cookie(result.getResponse().getCookies()[0]);
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
     }
 
@@ -101,12 +101,12 @@ public class UserSearchTest {
                         "  \"password\": \"admin01\"\n" +
                         "}");
         var result = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
         request = ApiUtils.getBuilder("/api/user/all")
                 .cookie(result.getResponse().getCookies()[0]);
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data").isArray());
     }
@@ -128,13 +128,13 @@ public class UserSearchTest {
                         "  \"password\": \"123456\"\n" +
                         "}");
         var result = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("100"))
                 .andReturn();
         request = ApiUtils.getBuilder("/api/user/all")
                 .cookie(result.getResponse().getCookies()[0]);
         mockMvc.perform(request)
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("999"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("106"));
     }
 
     @AfterEach
