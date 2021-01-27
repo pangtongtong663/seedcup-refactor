@@ -8,16 +8,17 @@ import com.seedcup.backend.common.exception.DuplicateInfoException;
 import com.seedcup.backend.common.exception.NoTeamException;
 import com.seedcup.backend.common.exception.PermissionDeniedException;
 
+import java.util.List;
+
 public interface TeamService {
 
     void createTeam(TeamCreateDto teamCreateDto) throws DuplicateInfoException, AlreadyInTeamException;
 
-    void editTeamInfo(TeamUpdateDto editIntroductionDtoDto) throws NoTeamException, PermissionDeniedException;
+    void editTeamInfo(TeamUpdateDto editIntroductionDtoDto);
 
-    void addMember(Integer userId) throws NoTeamException, PermissionDeniedException;
+    void addMember(Integer userId);
 
-    void delMember(Integer userId) throws NoTeamException, PermissionDeniedException;
+    void delMember(Integer userId);
 
-    TeamInfoDto getTeamInfo();
-
+    TeamInfoDto getTeamInfo(Integer teamId);
 }

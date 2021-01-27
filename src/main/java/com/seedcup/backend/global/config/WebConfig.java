@@ -1,7 +1,9 @@
 package com.seedcup.backend.global.config;
 
+import com.seedcup.backend.common.dao.TeamMapper;
 import com.seedcup.backend.common.dao.UserMapper;
 import com.seedcup.backend.common.interceptor.AuthInterceptor;
+import com.seedcup.backend.common.interceptor.TeamInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,12 +17,16 @@ public class WebConfig implements WebMvcConfigurer {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private TeamMapper teamMapper;
+
     /**
      * 添加拦截器
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(userMapper)).addPathPatterns("/**");
+        registry.addInterceptor(new TeamInterceptor(teamMapper)).addPathPatterns("/**");
     }
 
     /**

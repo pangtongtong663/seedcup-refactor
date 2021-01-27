@@ -56,7 +56,7 @@ public class StandardResponse {
         return new ResponseDto<>("996", "already in team");
     }
 
-    public static ResponseDto<Object> notInTeam() {
+    public static ResponseDto<String> notInTeam() {
         return new ResponseDto<>("995", "not yet in team");
     }
 }

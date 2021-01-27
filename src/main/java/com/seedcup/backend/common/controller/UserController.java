@@ -25,13 +25,6 @@ public class UserController {
 
     @RequestMapping(value = "/sign_up", method = RequestMethod.POST)
     public ResponseDto<Object> signUp(@Valid @RequestBody UserSignUpDto signUpDto) {
-        /*
-         * @Author holdice
-         * @Description 用户注册接口
-         * @Date 2020/11/22 下午7:36
-         * @Param [signUpDto]
-         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
-         */
         try {
             userService.signUp(signUpDto);
             return StandardResponse.ok();
@@ -44,13 +37,6 @@ public class UserController {
 
     @RequestMapping(value = "/log_in", method = RequestMethod.POST)
     public ResponseDto<Object> logIn(@Valid @RequestBody UserLoginDto loginInfo, HttpSession session) {
-        /*
-         * @Author holdice
-         * @Description 用户登录接口，通过session维持登录状态
-         * @Date 2020/12/7 9:07 下午
-         * @Param [loginInfo, session]
-         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
-         */
         User user = userService.logIn(loginInfo);
         if (user != null) {
             session.setAttribute("userBasicInfo", new UserBasicInfo(user.getId(), user.getIsAdmin()));
@@ -63,13 +49,6 @@ public class UserController {
     @LoginRequired
     @RequestMapping(value = "/log_out", method = RequestMethod.POST)
     public ResponseDto<Object> logOut(HttpSession session) {
-        /*
-         * @Author holdice
-         * @Description 注销登录
-         * @Date 2020/12/7 9:07 下午
-         * @Param [session]
-         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
-         */
         userService.logOut(session);
         return StandardResponse.ok();
     }
@@ -83,26 +62,12 @@ public class UserController {
     @LoginRequired
     @RequestMapping(value = "/my_info", method = RequestMethod.GET)
     public ResponseDto<Object> getCurrentUserInfo() {
-        /*
-         * @Author holdice
-         * @Description 获取当前用户信息
-         * @Date 2020/12/7 9:08 下午
-         * @Param []
-         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
-         */
         return StandardResponse.ok(userService.getCurrentUser());
     }
 
     @LoginRequired(needAdmin = true)
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseDto<Object> getAllUsers() {
-        /*
-         * @Author holdice
-         * @Description 获取所有用户，需要管理员权限，可以看到管理员用户
-         * @Date 2020/12/9 11:25 下午
-         * @Param []
-         * @return com.seedcup.seedcupbackend.global.dto.ResponseDto<java.lang.Object>
-         */
         return StandardResponse.ok(userService.getAllUsers());
     }
 }

@@ -26,13 +26,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
-        /*
-         * @Author holdice
-         * @Description 拦截请求前置处理器，检查所请求路由是否需要登录，是否需要管理员，并作相应认证
-         * @Date 2020/12/11 3:21 下午
-         * @Param [request, response, handler]
-         * @return boolean
-         */
         if (!(handler instanceof HandlerMethod)) return true;
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
@@ -49,13 +42,6 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private boolean authLogIn(UserBasicInfo userBasicInfo) throws UnAuthException {
-        /*
-         * @Author holdice
-         * @Description 验证登录
-         * @Date 2020/12/11 3:22 下午
-         * @Param [userBasicInfo]
-         * @return boolean
-         */
         if (userBasicInfo == null) {
             throw new UnAuthException();
         } else {
@@ -65,13 +51,6 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private boolean authAdmin(UserBasicInfo userBasicInfo) throws PermissionDeniedException {
-        /*
-         * @Author holdice
-         * @Description 验证管理员身份
-         * @Date 2020/12/11 3:22 下午
-         * @Param [userBasicInfo]
-         * @return boolean
-         */
         if (userBasicInfo.getIsAdmin()) {
             return true;
         } else {
@@ -90,13 +69,6 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     public static User getCurrentUser() {
-        /*
-         * @Author holdice
-         * @Description 获取当前登录的用户
-         * @Date 2020/11/25 9:54 下午 
-         * @Param []
-         * @return com.seedcup.seedcupbackend.common.po.User
-         */
         return userMapper.selectById(currentUserBasicInfo.get().getUserId());
     }
 

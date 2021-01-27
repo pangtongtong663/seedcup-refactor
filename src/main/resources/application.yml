@@ -9,7 +9,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/seedcup?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: root
-    password: 3239
+    password: hemu3239
 
   redis:
     database: 1

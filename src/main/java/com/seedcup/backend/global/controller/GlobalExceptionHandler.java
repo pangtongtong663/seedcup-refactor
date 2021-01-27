@@ -1,5 +1,6 @@
 package com.seedcup.backend.global.controller;
 
+import com.seedcup.backend.common.exception.NoTeamException;
 import com.seedcup.backend.common.exception.PermissionDeniedException;
 import com.seedcup.backend.common.exception.UnAuthException;
 import com.seedcup.backend.global.dto.ResponseDto;
@@ -36,5 +37,11 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseDto<String> permissionDeniedHandler() {
         return StandardResponse.permissionDenied();
+    }
+
+    @ExceptionHandler(NoTeamException.class)
+    @ResponseBody
+    public ResponseDto<String> notInTeamHandler() {
+        return StandardResponse.notInTeam();
     }
 }

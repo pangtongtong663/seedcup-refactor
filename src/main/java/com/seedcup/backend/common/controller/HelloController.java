@@ -14,13 +14,6 @@ public class HelloController {
     @LoginRequired(needAdmin = true)
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String index() {
-        /*
-         * @Author holdice
-         * @Description
-         * @Date 2020/11/20 11:45 下午
-         * @Param java.lang.String
-         * @return java.lang.String
-         **/
         return "Hello";
     }
 }
