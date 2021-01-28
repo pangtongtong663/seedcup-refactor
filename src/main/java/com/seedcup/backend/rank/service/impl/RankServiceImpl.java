@@ -39,7 +39,7 @@ public class RankServiceImpl implements RankService {
 
         //筛选出特定比赛进程的队伍
         QueryWrapper<Team> tqw = new QueryWrapper<>();
-        tqw.le("game_status", gameStatus);
+        tqw.ge("game_status", gameStatus);
         List<Team> teams = teamMapper.selectList(tqw);
 
         //筛选出各队伍对应比赛进程的提交，计算平均值得到最终得分

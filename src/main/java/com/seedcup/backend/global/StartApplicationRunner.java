@@ -202,5 +202,13 @@ public class StartApplicationRunner implements ApplicationRunner {
                 .markTime(LocalDateTime.now())
                 .score(99.0)
                 .build());
+
+        //更新比赛状态
+        team01.setGameStatus(3);
+        team02.setGameStatus(3);
+        team03.setGameStatus(1);
+        teamMapper.updateById(team01);
+        teamMapper.updateById(team02);
+        teamMapper.updateById(team03);
     }
 }
