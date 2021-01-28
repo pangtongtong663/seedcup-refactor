@@ -97,7 +97,13 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public TeamInfoDto getTeamInfo(Integer teamId){
+    public TeamInfoDto getTeamInfo(Integer teamId) throws NoTeamException {
+        if (teamId == -1) {
+            teamId = AuthInterceptor.getCurrentUser().getTeamId();
+        }
+        if (teamId == -1) {
+            throw new NoTeamException();
+        }
         QueryWrapper<User> uqw = new QueryWrapper<>();
         uqw.eq("team_id", teamId);
         return new TeamInfoDto(teamMapper.selectById(teamId), userMapper.selectList(uqw));

@@ -24,15 +24,15 @@ public class StandardResponse {
         return new ResponseDto<>("101", "duplicate information", duplicateInfos);
     }
 
-    public static ResponseDto<String> valueInvalid(String invalidInfo) {
+    public static ResponseDto<Object> valueInvalid(String invalidInfo) {
         return new ResponseDto<>("102", "value invalid", invalidInfo);
     }
 
-    public static ResponseDto<String> wrongHttpMethod() {
+    public static ResponseDto<Object> wrongHttpMethod() {
         return new ResponseDto<>("103", "http method error");
     }
 
-    public static ResponseDto<String> notLogin() {
+    public static ResponseDto<Object> notLogin() {
         return new ResponseDto<>("104", "need login");
     }
 
@@ -40,7 +40,7 @@ public class StandardResponse {
         return new ResponseDto<>("105", "verification code error");
     }
 
-    public static ResponseDto<String> permissionDenied() {
+    public static ResponseDto<Object> permissionDenied() {
         return new ResponseDto<>("106", "permission denied");
     }
 
@@ -56,7 +56,7 @@ public class StandardResponse {
         return new ResponseDto<>("109", "already in team");
     }
 
-    public static ResponseDto<String> notInTeam() {
+    public static ResponseDto<Object> notInTeam() {
         return new ResponseDto<>("110", "not yet in team");
     }
 }

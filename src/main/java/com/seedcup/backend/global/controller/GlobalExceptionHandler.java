@@ -18,37 +18,37 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public ResponseDto<String> invalidValueExceptionHandler(MethodArgumentNotValidException e) {
+    public ResponseDto<Object> invalidValueExceptionHandler(MethodArgumentNotValidException e) {
         return StandardResponse.valueInvalid(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
-    public ResponseDto<String> invalidParamExceptionHandler(ConstraintViolationException e) {
+    public ResponseDto<Object> invalidParamExceptionHandler(ConstraintViolationException e) {
         return StandardResponse.valueInvalid(e.getMessage().split(",")[0]);
     }
 
     @ExceptionHandler(UnAuthException.class)
     @ResponseBody
-    public ResponseDto<String> unAuthExceptionHandler() {
+    public ResponseDto<Object> unAuthExceptionHandler() {
         return StandardResponse.notLogin();
     }
 
     @ExceptionHandler(PermissionDeniedException.class)
     @ResponseBody
-    public ResponseDto<String> permissionDeniedHandler() {
+    public ResponseDto<Object> permissionDeniedHandler() {
         return StandardResponse.permissionDenied();
     }
 
     @ExceptionHandler(NoTeamException.class)
     @ResponseBody
-    public ResponseDto<String> notInTeamHandler() {
+    public ResponseDto<Object> notInTeamHandler() {
         return StandardResponse.notInTeam();
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseBody
-    public ResponseDto<String> wrongHttpMethod() {
+    public ResponseDto<Object> wrongHttpMethod() {
         return StandardResponse.wrongHttpMethod();
     }
 }

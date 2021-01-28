@@ -2,6 +2,7 @@ package com.seedcup.backend.common.controller;
 
 import com.seedcup.backend.common.annotation.LoginRequired;
 import com.seedcup.backend.common.annotation.TeamRequired;
+import com.seedcup.backend.common.dto.TeamInfoDto;
 import com.seedcup.backend.common.dto.TeamUpdateDto;
 import com.seedcup.backend.common.dto.TeamCreateDto;
 import com.seedcup.backend.common.exception.*;
@@ -62,6 +63,11 @@ public class TeamController {
     @LoginRequired
     @RequestMapping(value = "/info/{teamId}", method = RequestMethod.GET)
     public ResponseDto<Object> getTeamInfo(@PathVariable Integer teamId){
-        return StandardResponse.ok(teamService.getTeamInfo(teamId));
+        try {
+            return StandardResponse.ok(teamService.getTeamInfo(teamId));
+        } catch (NoTeamException e) {
+            return StandardResponse.notInTeam();
+        }
+
     }
 }
