@@ -9,7 +9,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/seedcup?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: root
-    password: 3239
+    password: hemu3239
+    tomcat:
+      test-while-idle: true
+      test-on-borrow: false
+      time-between-eviction-runs-millis: 18800
 
   redis:
     database: 1
@@ -20,12 +24,6 @@ spring:
     redis:
       flush-mode: on_save
       namespace: spring:session
-
-swagger:
-  enabled: true
-  version: 0.1
-  title: 种子杯后台接口文档
-  description: 重构中
 
 logging:
   level:

@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.seedcup</groupId>
     <artifactId>seedcup-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.6.0</version>
     <name>seedcup-backend</name>
     <description>seedcup-backend</description>
 
@@ -41,6 +41,7 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
+            <version>8.0.22</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
