@@ -10,6 +10,10 @@ spring:
     url: jdbc:mysql://localhost:3306/seedcup?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: root
     password: hemu3239
+    tomcat:
+      test-while-idle: true
+      test-on-borrow: false
+      time-between-eviction-runs-millis: 18800
 
   redis:
     database: 1
