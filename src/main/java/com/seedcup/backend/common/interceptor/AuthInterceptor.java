@@ -6,6 +6,8 @@ import com.seedcup.backend.common.dto.UserBasicInfo;
 import com.seedcup.backend.common.exception.PermissionDeniedException;
 import com.seedcup.backend.common.exception.UnAuthException;
 import com.seedcup.backend.common.po.User;
+import com.seedcup.backend.utils.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,10 +20,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private static final ThreadLocal<UserBasicInfo> currentUserBasicInfo = new ThreadLocal<>();
 
+    private static JwtUtils jwt;
     private static UserMapper userMapper;
 
-    public AuthInterceptor (UserMapper userMapper) {
+    public AuthInterceptor (UserMapper userMapper, JwtUtils jwt) {
         AuthInterceptor.userMapper = userMapper;
+        this.jwt = jwt;
     }
 
     @Override
@@ -31,31 +35,16 @@ public class AuthInterceptor implements HandlerInterceptor {
         Method method = handlerMethod.getMethod();
         if (method.isAnnotationPresent(LoginRequired.class)) {
             LoginRequired loginRequired = method.getAnnotation(LoginRequired.class);
-            UserBasicInfo userBasicInfo = (UserBasicInfo) request.getSession().getAttribute("userBasicInfo");
-            if (authLogIn(userBasicInfo)) {
-                if (loginRequired.needAdmin()) return authAdmin(userBasicInfo);
+            String token = request.getHeader("Authorization");
+            boolean res = jwt.checkToken(token);
+            if (res) {
+                User user = userMapper.selectById(jwt.getUserIdFromToken(token));
+                currentUserBasicInfo.set(new UserBasicInfo(user.getId(), user.getIsAdmin()));
                 return true;
             }
-            return authLogIn(userBasicInfo);
+            return false;
         }
         return true;
-    }
-
-    private boolean authLogIn(UserBasicInfo userBasicInfo) throws UnAuthException {
-        if (userBasicInfo == null) {
-            throw new UnAuthException();
-        } else {
-            currentUserBasicInfo.set(userBasicInfo);
-            return true;
-        }
-    }
-
-    private boolean authAdmin(UserBasicInfo userBasicInfo) throws PermissionDeniedException {
-        if (userBasicInfo.getIsAdmin()) {
-            return true;
-        } else {
-            throw new PermissionDeniedException();
-        }
     }
 
     @Override

@@ -1,8 +1,5 @@
 server:
   port: 8087
-  servlet:
-    session:
-      timeout: 18000
 
 spring:
   datasource:
@@ -20,13 +17,12 @@ spring:
     host: 127.0.0.1
     port: 6379
 
-  session:
-    redis:
-      flush-mode: on_save
-      namespace: spring:session
-
 logging:
   level:
     root: info
   file:
     name: log/spring_log.log
+
+jwt:
+  secret: "hihi"
+  tokenHeader: "Authorization"

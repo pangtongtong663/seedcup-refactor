@@ -10,6 +10,7 @@ import com.seedcup.backend.common.service.UserService;
 import com.seedcup.backend.global.dto.ResponseDto;
 import com.seedcup.backend.global.dto.StandardResponse;
 import com.seedcup.backend.global.exception.SmsCaptchaWrongException;
+import com.seedcup.backend.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,9 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/api/user", produces = "application/json")
 public class UserController {
+
+    @Autowired
+    private JwtUtils jwt;
 
     @Autowired
     private UserService userService;
@@ -36,11 +40,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/log_in", method = RequestMethod.POST)
-    public ResponseDto<Object> logIn(@Valid @RequestBody UserLoginDto loginInfo, HttpSession session) {
+    public ResponseDto<Object> logIn(@Valid @RequestBody UserLoginDto loginInfo) {
         User user = userService.logIn(loginInfo);
         if (user != null) {
-            session.setAttribute("userBasicInfo", new UserBasicInfo(user.getId(), user.getIsAdmin()));
-            return StandardResponse.ok();
+            return StandardResponse.ok(jwt.generateJwtToken(user.getId()));
         } else {
             return StandardResponse.fail();
         }

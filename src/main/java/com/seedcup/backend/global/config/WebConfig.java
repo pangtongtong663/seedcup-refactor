@@ -4,6 +4,8 @@ import com.seedcup.backend.common.dao.TeamMapper;
 import com.seedcup.backend.common.dao.UserMapper;
 import com.seedcup.backend.common.interceptor.AuthInterceptor;
 import com.seedcup.backend.common.interceptor.TeamInterceptor;
+import com.seedcup.backend.utils.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,6 +15,9 @@ import javax.annotation.Resource;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private JwtUtils jwt;
 
     @Resource
     private UserMapper userMapper;
@@ -25,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor(userMapper)).addPathPatterns("/**");
+        registry.addInterceptor(new AuthInterceptor(userMapper, jwt)).addPathPatterns("/**");
         registry.addInterceptor(new TeamInterceptor(teamMapper)).addPathPatterns("/**");
     }
 
