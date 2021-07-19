@@ -128,6 +128,7 @@ public class UserServiceImpl implements UserService {
          * @Param [username, password]
          * @return void
          */
+        password = SecurityTool.encrypt(password, "");
         QueryWrapper<User> qw = new QueryWrapper<>();
         qw.eq("email", username + "@admin.com");
         User user = userMapper.selectOne(qw);
@@ -192,10 +193,12 @@ public class UserServiceImpl implements UserService {
          * @Param [username, password]
          * @return void
          */
+        password = SecurityTool.encrypt(password, "");
         User testUser = User.builder().username(username).passwordMd5(SecurityTool.encrypt(password, username + "@test.com"))
                 .phoneNumber("123456789" + (new Random().nextInt(89) + 10)).className("test class").college("test co")
                 .createdTime(LocalDateTime.now()).email(username + "@test.com").isAdmin(false).school("test sc").teamId(-1)
                 .build();
         userMapper.insert(testUser);
+        log.info("test user: " + username + "@test.com" + ";password: " + password + "; generated");
     }
 }

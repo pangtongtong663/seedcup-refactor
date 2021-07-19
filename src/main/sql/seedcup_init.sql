@@ -1,6 +1,10 @@
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS `commit`;
 CREATE TABLE `commit`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
-  `score` decimal(0, 2) NOT NULL COMMENT '得分',
+  `score` decimal(14, 2) NOT NULL COMMENT '得分',
   `game_status` tinyint(1) NOT NULL COMMENT '所属比赛进程',
   `file_path` varchar(255) NOT NULL COMMENT '提交的文件路径',
   `team_id` int(0) NOT NULL COMMENT '所属队伍',
@@ -9,6 +13,7 @@ CREATE TABLE `commit`  (
   PRIMARY KEY (`id`)
 )ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
+DROP TABLE IF EXISTS `team`;
 CREATE TABLE `team`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -19,6 +24,7 @@ CREATE TABLE `team`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '真实姓名',

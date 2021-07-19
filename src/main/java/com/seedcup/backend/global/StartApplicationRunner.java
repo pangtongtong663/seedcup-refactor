@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+@Component
 @Slf4j
 public class StartApplicationRunner implements ApplicationRunner {
 

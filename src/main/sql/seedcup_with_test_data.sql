@@ -35,19 +35,6 @@ CREATE TABLE `commit`  (
 -- ----------------------------
 -- Records of commit
 -- ----------------------------
-INSERT INTO `commit` VALUES (14, 97.00, 1, '/root/', 18, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (15, 93.00, 1, '/root/', 18, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (16, 85.00, 1, '/root/', 19, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (17, 99.00, 1, '/root/', 19, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (18, 79.00, 1, '/root/', 20, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (19, 97.00, 2, '/root/', 18, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (20, 93.00, 2, '/root/', 18, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (21, 85.00, 2, '/root/', 19, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (22, 99.00, 2, '/root/', 19, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (23, 97.00, 3, '/root/', 18, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (24, 93.00, 3, '/root/', 18, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (25, 85.00, 3, '/root/', 19, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
-INSERT INTO `commit` VALUES (26, 99.00, 3, '/root/', 19, '2021-01-28 14:28:30', '2021-01-28 14:28:30');
 
 -- ----------------------------
 -- Table structure for team
@@ -66,9 +53,6 @@ CREATE TABLE `team`  (
 -- ----------------------------
 -- Records of team
 -- ----------------------------
-INSERT INTO `team` VALUES (18, '测试队伍1', 68, 18, '12345677654321', 3);
-INSERT INTO `team` VALUES (19, '测试队伍2', 70, 18, '12345677654321', 3);
-INSERT INTO `team` VALUES (20, '测试队伍3', 72, 18, '12345677654321', 1);
 
 -- ----------------------------
 -- Table structure for user
@@ -92,13 +76,4 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (65, 'admin01', 'bc003e485e4f5d89e33dc2700007bbad', '', '', '', 'admin01@admin.com', '12345678901', '2021-01-28 14:28:30', -1, 1);
-INSERT INTO `user` VALUES (66, 'admin02', '45e07a2c7982a01d5ca25768a92e3572', '', '', '', 'admin02@admin.com', '12345678902', '2021-01-28 14:28:30', -1, 1);
-INSERT INTO `user` VALUES (67, 'admin03', '7249f1f97c23e5c55b16351396746e90', '', '', '', 'admin03@admin.com', '12345678903', '2021-01-28 14:28:30', -1, 1);
-INSERT INTO `user` VALUES (68, 'test01', '5fad3184cd2ba2dda87e473b684325c5', 'test sc', 'test co', 'test class', 'test01@test.com', '12345678971', '2021-01-28 14:28:30', 18, 0);
-INSERT INTO `user` VALUES (69, 'test02', '5eafeafdaebab40c7b364b4b6c920279', 'test sc', 'test co', 'test class', 'test02@test.com', '12345678988', '2021-01-28 14:28:30', 18, 0);
-INSERT INTO `user` VALUES (70, 'test03', '6fa0a30320a223fa79bc7c335532e92c', 'test sc', 'test co', 'test class', 'test03@test.com', '12345678977', '2021-01-28 14:28:30', 19, 0);
-INSERT INTO `user` VALUES (71, 'test04', '93b513efec0485670628c05652fd628e', 'test sc', 'test co', 'test class', 'test04@test.com', '12345678974', '2021-01-28 14:28:30', 19, 0);
-INSERT INTO `user` VALUES (72, 'test05', '5c64de2b6dc0272a00c21d28212a3674', 'test sc', 'test co', 'test class', 'test05@test.com', '12345678940', '2021-01-28 14:28:30', 20, 0);
-
 SET FOREIGN_KEY_CHECKS = 1;
